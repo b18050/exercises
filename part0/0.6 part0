@@ -1,0 +1,10 @@
+title 0.6 (part0)
+
+note over Browser:New note is created.
+note over Browser: prevent default functioning of submit button
+note over Browser: add new note to notes array.
+Browser->Server: send Form data with HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+Browser->Server: Also send the Content-type of request
+note over Server: push Form data to notes array on server
+Server-> Browser: Send message (Msg Created) .
+
