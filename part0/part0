@@ -1,0 +1,14 @@
+title part0
+
+Browser->Server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note
+note over Browser:Browser sends the form data with HTTP POST to the server .
+Server-->Browser: url redirect to https://fullstack-exampleapp.herokuapp.com/notes
+note over Server: asks browser to HTTP GET request to /notes
+Server-->Browser: redirect to notes_page
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes_page
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+Server-->Browser: main.css
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+Server-->Browser: main.js
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+Server-->Browser: provides data from server
