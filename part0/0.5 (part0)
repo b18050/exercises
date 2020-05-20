@@ -1,0 +1,14 @@
+title 0.5 (part0)
+
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa
+Server-->Browser: HTML code
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+Server-->Browser: main.css
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+Server-->Browser: spa.js
+note over Browser:New note is created.
+Browser->Server: send Form data with HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+Browser->Server: Also send the Content-type of request
+note over Server: push Form data to notes array on server
+Server-> Browser: Send message (Msg Created) .
+
