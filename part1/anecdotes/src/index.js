@@ -12,26 +12,41 @@ const Button = ({eventHandler,text}) => {
 }
 
 const App = (props) => {
-  const [selected, setSelected] = useState(0)
-  const min = 0;
-  const max = 5
+	
+	const [selected, setSelected] = useState(
+		{value: 0 ,
+		 points : new Array(6+1).join('0').split('').map(parseFloat)
+		})
+   
+  	const min = 0;
+  	const max = 5;
 
-  const set_anecdote = () => {
-  	const random_int = Math.floor(Math.random() * (max - min + 1) ) + min;
-  	console.log(random_int)
-  	setSelected(random_int)
-  }
-
+  	const set_anecdote = () => {
+  		const random_int = Math.floor(Math.random() * (max - min + 1) ) + min;
+  		console.log(random_int)
+  		setSelected({ ...selected, value:random_int})
+  	}
+  	
+  	const cast_vote = () => {
+  		
+  		const copy = [...selected.points]
+		// increment the value in position 2 by one
+		copy[selected.value] += 1 
+		setSelected({ ...selected, points:copy})
+		console.log(selected.points)
+			 
+		
+  } 
 
   return (
     <div>
       
-     <p> {props.anecdotes[selected]} </p>
+     <p> {props.anecdotes[selected.value]} </p>
 
 
 
-    <Button eventHandler={set_anecdote} text={"next anecdote"} />
-
+    <Button eventHandler = {set_anecdote} text = {"next anecdote"} />
+    <Button eventHandler = {cast_vote} text={"vote"} />
     </div>
    
     
