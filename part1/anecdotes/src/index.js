@@ -11,6 +11,23 @@ const Button = ({eventHandler,text}) => {
 		)
 }
 
+const Display_max = ({selected,anecdotes}) => {
+	console.log(anecdotes)
+	const arr = selected.points
+	console.log(arr)
+	const index = arr.indexOf(Math.max(...arr))
+  	console.log(index)
+  	
+  		return(
+  			<>
+  				<p> {anecdotes[index]} </p>	
+  			</>
+  		)
+  			
+
+  }
+
+
 const App = (props) => {
 	
 	const [selected, setSelected] = useState(
@@ -36,8 +53,9 @@ const App = (props) => {
 		console.log(selected.points)
 			 
 		
-  } 
+  }
 
+  
   return (
     <div>
       
@@ -47,6 +65,11 @@ const App = (props) => {
 
     <Button eventHandler = {set_anecdote} text = {"next anecdote"} />
     <Button eventHandler = {cast_vote} text={"vote"} />
+
+    <p> has {selected.points[selected.value]} votes </p>
+
+    <h1> Anecdotes with most votes </h1>
+    <Display_max selected={selected} anecdotes={props.anecdotes} />
     </div>
    
     
