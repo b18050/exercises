@@ -1,6 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+const Course = ({ course}) => {
+	return(
+		<>
+			<Header course={course} />
+			<Content course={course} />
+		</>
+	)
+}
+
 const Header = ({ course }) => {
   return (
     <h1>{course.name}</h1>
