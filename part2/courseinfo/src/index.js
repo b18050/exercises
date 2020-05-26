@@ -19,11 +19,10 @@ const Header = ({ course }) => {
 
 const Total = ({ course }) => {
 	const parts = course.parts
-  	const total_exercises = parts.reduce(
-  		(total_exercises,part) => total_exercises + part.exercises,0
-  		)
-  return(
-    <p><b>total of {total_exercises} exercises </b></p>
+  	const total = parts.reduce((s,part) => s + part.exercises,0)
+  		
+  	return(
+    <p><b>total of {total} exercises </b></p>
   ) 
 }
 
