@@ -54,7 +54,7 @@ const App = () => {
     });
     console.log(filter_persons)
     return(<>
-      <p> {filter_persons.map((person) => <Contact person={person} key={person.name} />)} </p>
+       {filter_persons.map((person) => <Contact person={person} key={person.name} />)} 
       </>)
   }
 
@@ -64,13 +64,10 @@ const App = () => {
     )
   }
 
-
-  return (
-    <div>
-      <h2>Phonebook</h2>
-      <p> filter shown with <input value={filterName} onChange={handleFilterNameChange}/> </p>
-      <h2> add a new </h2>
-      <form onSubmit={addName}>
+  const PersonForm = () => {
+    return(
+    <>
+    <form onSubmit={addName}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
         </div>
@@ -80,6 +77,16 @@ const App = () => {
           <button type="submit">add</button>
         </div>
       </form>
+    </>)
+    
+  }
+
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      <p> filter shown with <input value={filterName} onChange={handleFilterNameChange}/> </p>
+      <h2> add a new </h2>
+      <PersonForm />
       <h2>Numbers</h2>
       <FilterName persons={persons} /> 
       
