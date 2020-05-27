@@ -12,10 +12,22 @@ const App = () => {
     const nameObject = {
       name: newName
     }
+      if(!persons.filter(
+          person=>person.name===newName)
+          .length>0) {
+
+        setPersons(persons.concat(nameObject))
+        setNewName('')
+        console.log(persons)
+      }
+      else {
+        alert(`${newName} is already added to phonebook`)
+      }
+      
+    
+    
   
-    setPersons(persons.concat(nameObject))
-    setNewName('')
-    console.log(persons)
+    
   }
 
   const handleNameChange = (event) => {
@@ -41,7 +53,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        {persons.map((person) => <Name person={person} />)}
+        {persons.map((person) => <Name person={person} key={person.name} />)}
       </ul>
       
     </div>
