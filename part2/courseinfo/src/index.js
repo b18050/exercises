@@ -1,10 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import Course from './components/course';
+import App from './app';
 
-
-const App = () => {
-  const courses = [
+const courses = [
     {
       name: 'Half Stack application development',
       id: 1,
@@ -49,15 +47,5 @@ const App = () => {
     }
   ]
 
-  
 
-  return (
-  	<>
-  		{ courses.map(course => 
-  			<Course key={course.id} course={course} />
-  		 )}
-  	</>
-   )
-}
-
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App courses={courses} />, document.getElementById('root'))
