@@ -1,11 +1,13 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios'
+import Weather from './weather';
 const App = () => {
 
-    const [country, setCountryData] = useState([])
-    const [newCountry, setNewCountry] = useState('')
-    const [showCountry, setShowCountry] = useState('')
+    const [country, setCountryData] = useState([])  // data collection
+    const [newCountry, setNewCountry] = useState('')    // show Data
+     
+   
 
     useEffect(() => {
         axios
@@ -16,15 +18,6 @@ const App = () => {
             })
     }, [])
 
-    const Button = (props) => {
-        return (
-            <>
-                <button onClick={ () =>props.eventHandler} >
-                    {props.text}
-                </button>
-            </>
-        )
-    }
 
     const Filter = ({ country }) => {
         console.log(country.length)
@@ -35,7 +28,7 @@ const App = () => {
                 </>
             )
         }
-        else if (country.length == 1) {
+        else if (country.length === 1) {
 
             return (
                 <>
@@ -67,13 +60,12 @@ const App = () => {
         )
     }
 
-     
-
+    
     const Display = ({ country }) => {
         console.log(country.name)
         return (<>
             <p> {country.name}
-                <button onClick={() => setNewCountry(country.name)} >
+                <button onClick={() => setNewCountry(country.name) } >
                     show
                 </button>
                 </p>
@@ -102,7 +94,7 @@ const App = () => {
     const Flag = ({ flag }) => {
         console.log(flag)
         return (<>
-            <img src={flag} />
+            <img src={flag} alt='flag' height='60' width='70' />
         </>
         )
             }
@@ -119,6 +111,7 @@ const App = () => {
 
             <Language language={country.languages}  /> 
             <Flag flag={country.flag} />
+            <Weather place={country.capital} />
             </>
         )
     }
