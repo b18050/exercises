@@ -5,6 +5,7 @@ const App = () => {
 
     const [country, setCountryData] = useState([])
     const [newCountry, setNewCountry] = useState('')
+    const [showCountry, setShowCountry] = useState('')
 
     useEffect(() => {
         axios
@@ -14,6 +15,16 @@ const App = () => {
                 setCountryData(response.data)
             })
     }, [])
+
+    const Button = (props) => {
+        return (
+            <>
+                <button onClick={props.eventHandler} >
+                    {props.text}
+                </button>
+            </>
+        )
+    }
 
     const Filter = ({ country }) => {
         console.log(country.length)
@@ -56,9 +67,20 @@ const App = () => {
         )
     }
 
+    const showData = () => {
+        
+        return (<>
+
+            </>)
+            } 
+
     const Display = ({ country }) => {
-        return (
-            <p> {country.name} </p>
+
+        return (<>
+            <p> {country.name  } 
+                <Button eventHandler={showData} text={'show'} />
+                </p>
+            </>
         )
     }
 
