@@ -19,7 +19,7 @@ const App = () => {
     const Button = (props) => {
         return (
             <>
-                <button onClick={props.eventHandler} >
+                <button onClick={ () =>props.eventHandler} >
                     {props.text}
                 </button>
             </>
@@ -67,18 +67,15 @@ const App = () => {
         )
     }
 
-    const showData = () => {
-        
-        return (<>
-
-            </>)
-            } 
+     
 
     const Display = ({ country }) => {
-
+        console.log(country.name)
         return (<>
-            <p> {country.name  } 
-                <Button eventHandler={showData} text={'show'} />
+            <p> {country.name}
+                <button onClick={() => setNewCountry(country.name)} >
+                    show
+                </button>
                 </p>
             </>
         )
