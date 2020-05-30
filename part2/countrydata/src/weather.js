@@ -6,8 +6,10 @@ import axios from 'axios'
 
 const Weather = ({ place }) => {
     console.log(place)
+    const api_key = process.env.REACT_APP_API_KEY
+    console.log(api_key)
     const params = {
-        access_key: '0adf8ed3f5d07f2403df82eeeeb54205',
+        access_key: api_key ,
         query: { place }
     }
     const [weather, setWeatherData] = useState({})
@@ -29,6 +31,7 @@ const Weather = ({ place }) => {
             }
 
     
+    console.log(api_key)
 
     useEffect(() => {
         axios
