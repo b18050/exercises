@@ -73,7 +73,7 @@ Do you want to replace it?`)) {
                       `Person '${id}' was already removed from the server`
                       )
                     setTimeout(() => {
-                      setErrorMessage(null)
+                      setErrorMessage('')
                     },5000)
                     setPersons(persons.filter(x=>x.id !== id))
                   })
@@ -123,7 +123,7 @@ Do you want to replace it?`)) {
               `Person with '${personid} ' was already deleted from server`
               )
               setTimeout(() => {
-                setErrorMessage(null)
+                setErrorMessage('')
               },5000)  
             })
                
