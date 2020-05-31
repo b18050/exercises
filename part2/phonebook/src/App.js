@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 const App = () => {
   const [persons, setPersons] = useState([])
-  const [ newName, setNewName ] = useState('')
+  const [newName, setNewName ] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
 
@@ -22,14 +22,20 @@ const App = () => {
       name: newName,
       number: newNumber
     }
+
       if(!persons.filter(
           person=>person.name===newName)
           .length>0) {
 
-        setPersons(persons.concat(nameObject))
-        setNewName('')
-        setNewNumber('')
-        console.log(persons)
+          axios
+              .post('http://localhost:3001/persons', nameObject)
+              .then(response => {
+                  setPersons(persons.concat(response.data))
+                  setNewName('')
+                  setNewNumber('')
+                  console.log(persons)
+              })    
+        
       }
       else {
         alert(`${newName} is already added to phonebook`)
