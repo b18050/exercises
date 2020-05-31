@@ -1,13 +1,8 @@
 {
   "persons": [
     {
-      "name": "Ada",
-      "number": "554-885-26",
-      "id": 1
-    },
-    {
-      "name": "A",
-      "number": "3",
+      "name": "B",
+      "number": "2",
       "id": 2
     }
   ]

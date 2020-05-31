@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-
+import './index.css'
 import personService from './services/persons'
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName ] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
+  const [errorMessage, setErrorMessage] = useState('some error occurred')
 
     useEffect(() => {
         personService
@@ -56,6 +57,15 @@ Do you want to replace it?`)) {
                   .then(returnedPerson => {
                       setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
                   })
+                  .catch(error => {
+                    setErrorMessage(
+                      `Person '${id}' was already removed from the server`
+                      )
+                    setTimeout(() => {
+                      setErrorMessage(null)
+                    },5000)
+                    setPersons(persons.filter(x=>x.id !== id))
+                  })
               
           }
 
@@ -98,10 +108,26 @@ Do you want to replace it?`)) {
                 setPersons(persons.filter(person => person.id !== personid))
             })
             .catch(error => {
-                alert(`the person with id '${personid}' no more exists`)
+              setErrorMessage(
+              `Person with '${personid} ' was already deleted from server`
+              )
+              setTimeout(() => {
+                setErrorMessage(null)
+              },5000)  
             })
                
 
+    }
+
+    const Notification = ({message}) => {
+      if(message === null) {
+        return (null)
+      }
+      return (
+        <div className="error">
+            {message}
+        </div>
+      )
     }
 
     const Contact = ({ person, deletePerson }) => {
@@ -134,6 +160,7 @@ Do you want to replace it?`)) {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <p> filter shown with <input value={filterName} onChange={handleFilterNameChange}/> </p>
       <h2> add a new </h2>
       <PersonForm />
