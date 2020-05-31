@@ -6,7 +6,7 @@ const App = () => {
   const [newName, setNewName ] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
-  const [errorMessage, setErrorMessage] = useState('some error occurred')
+  const [errorMessage, setErrorMessage] = useState('')
 
     useEffect(() => {
         personService
@@ -41,7 +41,12 @@ const App = () => {
                   setNewName('')
                   setNewNumber('')
                   console.log(persons)
-              })    
+                  setErrorMessage(`Added ${newName} to the list`)
+                  setTimeout(() => {
+                      setErrorMessage('')
+                    },5000)
+              }) 
+
         
       }
       else {
@@ -56,6 +61,12 @@ Do you want to replace it?`)) {
                   .update(id, nameObject)
                   .then(returnedPerson => {
                       setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+                      setNewName('')
+                      setNewNumber('')
+                      setErrorMessage(`updated number of '${newName}' with '${newNumber}' to the list`)
+                      setTimeout(() => {
+                        setErrorMessage('')
+                      },5000)
                   })
                   .catch(error => {
                     setErrorMessage(
@@ -120,7 +131,8 @@ Do you want to replace it?`)) {
     }
 
     const Notification = ({message}) => {
-      if(message === null) {
+      console.log(message)
+      if(message === '') {
         return (null)
       }
       return (
