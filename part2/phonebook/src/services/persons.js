@@ -16,7 +16,11 @@ const erase = (personid) => {
 	console.log(personid)
 	const url = `${baseUrl}/${personid}`
 	const request = axios.delete(url)
-	return request.then(response => response.data)
+	if (window.confirm("Do you really want it to delete ")) {
+		return request.then(response => response.data)
+    }
+	
+	
 }
 
 export default { getPersons , create, erase }

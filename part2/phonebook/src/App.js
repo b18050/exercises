@@ -80,7 +80,11 @@ const App = () => {
         personService
             .erase(personid)
             .then(returnedPerson => {
+                console.log(returnedPerson)
                 setPersons(persons.filter(person => person.id !== personid))
+            })
+            .catch(error => {
+                alert(`the person with id '${personid}' no more exists`)
             })
                
 
