@@ -44,7 +44,21 @@ const App = () => {
         
       }
       else {
-        alert(`${newName} is already added to phonebook`)
+          if (window.confirm(`${newName} is already added to phonebook
+Do you want to replace it?`)) {
+              console.log(persons)
+              
+              const contact = persons.filter(x => x.name===newName)
+              console.log(contact[0].id)
+              const id = contact[0].id
+              personService
+                  .update(id, nameObject)
+                  .then(returnedPerson => {
+                      setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+                  })
+              
+          }
+
       }
   }
 

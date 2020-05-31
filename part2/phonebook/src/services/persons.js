@@ -19,8 +19,14 @@ const erase = (personid) => {
 	if (window.confirm("Do you really want it to delete ")) {
 		return request.then(response => response.data)
     }
-	
-	
 }
 
-export default { getPersons , create, erase }
+const update = (id, newObject) => {
+	console.log(newObject)
+	const url = `${baseUrl}/${id}`
+	const request = axios.put(url, newObject) 
+	return request.then(response => response.data)
+
+}
+
+export default { getPersons , create, erase , update }
