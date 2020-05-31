@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+
 import personService from './services/persons'
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -14,14 +14,19 @@ const App = () => {
                 console.log(initialPersons)
                 setPersons(initialPersons)
             })
+            .catch(error => {
+                alert('the server is not running, please run >>npx json-server --port 3001 --watch db.json'
+                 )
+            })
   },[])
   
   const addName = (event) => {
     event.preventDefault()
-    
+   
     const nameObject = {
       name: newName,
-      number: newNumber
+       number: newNumber
+
     }
 
       if(!persons.filter(
@@ -65,13 +70,29 @@ const App = () => {
     });
     console.log(filter_persons)
     return(<>
-       {filter_persons.map((person) => <Contact person={person} key={person.name} />)} 
+        {filter_persons.map((person) => <Contact person={person} key={person.name} deletePerson={() => deletePerson(person.id)} />)} 
       </>)
   }
 
-  const Contact = ({ person }) => {
+    const deletePerson = (personid) => {
+        console.log(personid)
+        console.log("person want to be deleted")
+        personService
+            .erase(personid)
+            .then(returnedPerson => {
+                setPersons(persons.filter(person => person.id !== personid))
+            })
+               
+
+    }
+
+    const Contact = ({ person, deletePerson }) => {
+      const label = 'erase'
   return (
-    <p>{person.name} {person.number}</p>
+      <p>{person.name} {person.number }
+          <button onClick={deletePerson}> {label}
+          </button>
+              </p>
     )
   }
 
