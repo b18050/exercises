@@ -1,0 +1,38 @@
+{
+  "name": "backend-part3",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ui": "(if exist build /s /q build) && cd ../exercises/part2/phonebook/ && npm run build --prod && xcopy /E build ..\\..\\..\\backend-part3\\",
+    "deploy": "git push heroku master",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
+    "logs:prod": "heroku logs --tail",
+    "lint":  "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/b18050/backend-part3.git"
+  },
+  "author": "Chandan Prakash",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/b18050/backend-part3/issues"
+  },
+  "homepage": "https://github.com/b18050/backend-part3#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.17",
+    "mongoose-unique-validator": "^2.0.3",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.1.0",
+    "nodemon": "^2.0.4"
+  }
+}
