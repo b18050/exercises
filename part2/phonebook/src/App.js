@@ -46,6 +46,15 @@ const App = () => {
                       setErrorMessage('')
                     },5000)
               }) 
+              .catch(error => {
+                // this is the way to access the error message
+                
+
+                setErrorMessage(`Person validation failed name: Path ${newName} is shorter than the minimum allowed length(3) or number: ${newNumber} is shorter than minimum allowed length(8) `)
+                setTimeout(() => {
+                      setErrorMessage('')
+                    },5000)
+              })
 
         
       }
