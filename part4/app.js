@@ -2,7 +2,7 @@ const config = require('./utils/config')
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const blogsRouter = require('./controller/blogs')
+const blogsRouter = require('./controllers/blogs')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
@@ -38,18 +38,6 @@ morgan.token('host', function(req) {
 
 
 module.exports = app
-
-// const blogSchema = mongoose.Schema({
-//   title: String,
-//   author: String,
-//   url: String,
-//   likes: Number
-// })
-
-// const Blog = mongoose.model('Blog', blogSchema)
-
-
-
 
 
 
