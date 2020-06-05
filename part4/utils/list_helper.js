@@ -20,15 +20,25 @@ const favoriteBlog = (blogs) => {
 
 const mostBlogs = (blogs) => {
 	
-	const mostblog = _.reduce(blogs, (countBlog, blog) => {
-		countBlog[blog.author] = ++countBlog[blog.author] || 1 ;
-		return countBlog
-	},{})
+  const mostblog = _.reduce(blogs, (countBlog, blog) => {
+    countBlog[blog.author] = ++countBlog[blog.author] || 1 
+    return countBlog
+  },{})
 	
-	console.log(typeof(mostblog))
-	// console.log(_.map(_.sortBy(mostblog, ''), _.values));
-
-	return 1
+  let author = 'X'
+  let maxblogs = 0
+  _.forIn(mostblog,(value,key) => {
+    if(maxblogs < value){
+      maxblogs = value
+      author = key
+    }	
+    // console.log(`${key}: ${value}`)
+  })
+  // console.log(maxblogs)
+  // console.log(author)
+  const result ={author,blogs:maxblogs}
+  // console.log(result)
+  return result
 }
 module.exports = {
   totalLikes,
