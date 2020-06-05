@@ -40,8 +40,28 @@ const mostBlogs = (blogs) => {
   // console.log(result)
   return result
 }
+
+const mostLikes = (blogs) => {
+  const mostlike = _.reduce(blogs, (countLike, blog) => {
+    countLike[blog.author] = countLike[blog.author]+blog.likes || blog.likes 
+    return countLike
+  },{})
+  console.log(mostlike)
+
+  let author = 'X'
+  let likes = 0
+  _.forIn(mostlike,(value,key) => {
+    if(likes < value) {
+      likes = value
+      author = key
+    }	
+  })
+  const result ={author,likes}
+  return result
+}
 module.exports = {
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
