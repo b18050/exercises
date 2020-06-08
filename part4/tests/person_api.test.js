@@ -37,19 +37,19 @@ test('blogs are returned as json', async () => {
   await api
     .get('/api/blogs')
     .expect(200)
-    .expect('Content-Type', /application\/json/)
+    .expect('Content-Type',/application\/json/) 
 })
 
 test('all notes are returned', async () => {
     
   const response = await api.get('/api/blogs')
-  console.log(response.body)
-  expect(response.body.length).toBe(initialBlogs.length)
+  const len =  response.body.length
+  expect(len).toBe(initialBlogs.length)
 })
   
 test('a specific note is within the returned notes', async () => {
   const response = await api.get('/api/blogs')
-  
+  console.log(response.body)
   const authors = response.body.map(r => r.author)
   
   expect(authors).toContain(
