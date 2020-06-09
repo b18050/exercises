@@ -60,6 +60,17 @@ test('id is defined unqiuley for returned blogs', async () =>{
   expect(_ids).toBeDefined()
 })
 
+test('likes are deafault to 0  if no likes are present' , async() => {
+  const newBlog = {
+    title: 'I am King With 0 likes',
+    author: ' Jkaciy Machelenghen',
+    url: 'https://myblog.com'
+  }
+
+  const savedBlog = await api.post('/api/blogs').send(newBlog)
+  expect(savedBlog.body).toHaveProperty('likes',0)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
