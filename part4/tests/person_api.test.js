@@ -11,7 +11,6 @@ const initialBlogs = [
     author: 'Michael Chan', 
     url: 'https://reactpatterns.com/', 
     likes: 7, 
-    
   },       
   { 
     title: 'Canonical string reduction', 
@@ -47,7 +46,6 @@ describe('when there is initially some blogs saved' , () => {
     
   test('a specific blog is within the returned blogs', async () => {
     const response = await api.get('/api/blogs')
-    console.log(response.body)
     const authors = response.body.map(r => r.author)
     
     expect(authors).toContain(
@@ -82,6 +80,17 @@ describe('blogs are saved properly' , () => {
       .post('/api/blogs')
       .send(newBlog)
       .expect(400)
+  })
+})
+
+describe('changing blogs updation and deletion', () => {
+  test('delete the blog', async() => {
+    const response = await api.get('/api/blogs')
+    const blogToDelete = response.body[0]
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+    
   })
 })
 
