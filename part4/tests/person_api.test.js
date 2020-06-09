@@ -71,6 +71,15 @@ test('likes are deafault to 0  if no likes are present' , async() => {
   expect(savedBlog.body).toHaveProperty('likes',0)
 })
 
+test('server responds with 400 when title or url missing ', async() => {
+  const newBlog = {
+    author: " I have no URL no title",
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+})
 afterAll(() => {
   mongoose.connection.close()
 })
