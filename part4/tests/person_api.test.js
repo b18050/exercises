@@ -47,7 +47,7 @@ test('all notes are returned', async () => {
   expect(len).toBe(initialBlogs.length)
 })
   
-test('a specific note is within the returned notes', async () => {
+test('a specific note is within the returned blogs', async () => {
   const response = await api.get('/api/blogs')
   console.log(response.body)
   const authors = response.body.map(r => r.author)
@@ -57,7 +57,12 @@ test('a specific note is within the returned notes', async () => {
   )
 })
 
-
+test('id is defined unqiuley for returned blogs', async () =>{
+  const response = await api.get('api/blogs')
+  const _ids = response.body.map(r => r._id)
+  console.log(_ids)
+  expect(_ids).toBeDefined();
+})
 
 afterAll(() => {
   mongoose.connection.close()
