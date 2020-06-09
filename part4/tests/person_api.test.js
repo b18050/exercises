@@ -24,12 +24,9 @@ const initialBlogs = [
 beforeEach(async () => {
   await Blog.deleteMany({})
 
-  let blogObject = new Blog(initialBlogs[0])
-  await blogObject.save()
-
-  blogObject = new Blog(initialBlogs[1])
-  await blogObject.save()
-
+  const blogObjects = initialBlogs.map(blog => new Blog(blog))
+  const promiseArray = blogObjects.map(blog => blog.save())
+  await Promise.all(promiseArray)
   
 })
 
@@ -58,31 +55,11 @@ test('a specific note is within the returned blogs', async () => {
 })
 
 test('id is defined unqiuley for returned blogs', async () =>{
-  const response = await api.get('api/blogs')
-  const _ids = response.body.map(r => r._id)
-  console.log(_ids)
-  expect(_ids).toBeDefined();
+  const response = await api.get('/api/blogs')
+  const _ids = response.body.map(r => r.id)
+  expect(_ids).toBeDefined()
 })
 
 afterAll(() => {
   mongoose.connection.close()
 })
-
-// const mongoose = require('mongoose')
-// const supertest = require('supertest')
-// const app = require('../app')
-
-// const api = supertest(app)
-
-// test('blogs are returned as json', async () => {
-//   await api
-//     .get('/api/blogs')
-//     .expect(200)
-//     .expect('Content-Type', /application\/json/)
-// })
-
-
-
-// afterAll(() => {
-//   mongoose.connection.close()
-// })
