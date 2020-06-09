@@ -30,56 +30,61 @@ beforeEach(async () => {
   
 })
 
-test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type',/application\/json/) 
-})
-
-test('all notes are returned', async () => {
+describe('when there is initially some blogs saved' , () => {
+  test('blogs are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type',/application\/json/) 
+  })
+  
+  test('all blogs are returned', async () => {
+      
+    const response = await api.get('/api/blogs')
+    const len =  response.body.length
+    expect(len).toBe(initialBlogs.length)
+  })
     
-  const response = await api.get('/api/blogs')
-  const len =  response.body.length
-  expect(len).toBe(initialBlogs.length)
+  test('a specific blog is within the returned blogs', async () => {
+    const response = await api.get('/api/blogs')
+    console.log(response.body)
+    const authors = response.body.map(r => r.author)
+    
+    expect(authors).toContain(
+      'Michael Chan'
+    )
+  })
 })
+
+describe('blogs are saved properly' , () => {
+  test('id is defined unqiuley for returned blogs', async () =>{
+    const response = await api.get('/api/blogs')
+    const _ids = response.body.map(r => r.id)
+    expect(_ids).toBeDefined()
+  })
   
-test('a specific note is within the returned blogs', async () => {
-  const response = await api.get('/api/blogs')
-  console.log(response.body)
-  const authors = response.body.map(r => r.author)
+  test('likes are deafault to 0  if no likes are present' , async() => {
+    const newBlog = {
+      title: 'I am King With 0 likes',
+      author: ' Jkaciy Machelenghen',
+      url: 'https://myblog.com'
+    }
   
-  expect(authors).toContain(
-    'Michael Chan'
-  )
+    const savedBlog = await api.post('/api/blogs').send(newBlog)
+    expect(savedBlog.body).toHaveProperty('likes',0)
+  })
+  
+  test('server responds with 400 when title or url missing ', async() => {
+    const newBlog = {
+      author: " I have no URL no title",
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
 })
 
-test('id is defined unqiuley for returned blogs', async () =>{
-  const response = await api.get('/api/blogs')
-  const _ids = response.body.map(r => r.id)
-  expect(_ids).toBeDefined()
-})
-
-test('likes are deafault to 0  if no likes are present' , async() => {
-  const newBlog = {
-    title: 'I am King With 0 likes',
-    author: ' Jkaciy Machelenghen',
-    url: 'https://myblog.com'
-  }
-
-  const savedBlog = await api.post('/api/blogs').send(newBlog)
-  expect(savedBlog.body).toHaveProperty('likes',0)
-})
-
-test('server responds with 400 when title or url missing ', async() => {
-  const newBlog = {
-    author: " I have no URL no title",
-  }
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(400)
-})
 afterAll(() => {
   mongoose.connection.close()
 })
