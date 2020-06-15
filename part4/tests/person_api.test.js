@@ -7,6 +7,7 @@ const api = supertest(app)
 
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const { response } = require('express')
 
 const initialBlogs = [ 
   { 
@@ -157,6 +158,40 @@ describe('when there is initially one user in db', () => {
 
     const usersAtEnd = await usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
+})
+
+describe('proper format of username and password ', () => {
+  //...
+
+  test('server responds with 400 when username is less than 3 characters', async () => {
+    const newUser = {
+      "username": "we",
+      "password": "1234"
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      
+    expect(result.body).toHaveProperty('error')
+
+  })
+
+  test('server responds with 400 when password is less than 3 characters', async () => {
+    const newUser = {
+      "username": "username",
+      "password": "14"
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      
+    expect(result.body).toHaveProperty('error')
+    
   })
 })
 
