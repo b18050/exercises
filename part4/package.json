@@ -12,6 +12,7 @@
   "author": "Chandan Prakash",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
@@ -19,6 +20,7 @@
     "express-async-errors": "^3.1.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.9.18",
+    "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
