@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 
+const loginHandle =  (event) => {
+  event.preventDefault()
+  console.log('event logging',user, password)
+}
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
 
