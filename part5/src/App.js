@@ -11,7 +11,6 @@ const App = () => {
   const [username,setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [newblog , setNewblog] = useState('')
   const [newauthor , setNewauthor] = useState('')
   const [newtitle, setNewtitle] = useState('')
   const [newurl, setNewurl] = useState('')
@@ -47,7 +46,7 @@ const App = () => {
       setPassword('')
     }
     catch(exception) {
-      setErrorMessage('Wrong credentials')
+      setErrorMessage('Wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)},5000)
     }
@@ -62,8 +61,7 @@ const App = () => {
 
   const addBlog = (event) => {
     event.preventDefault()
-    console.log('adding new blog ', newblog)
-
+    
     const blogObject = {
       title: newtitle,
       author: newauthor,
@@ -73,14 +71,16 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setNewblog('')
+        setNewauthor('')
+        setNewtitle('')
+        setNewurl('')
         setErrorMessage(`Added ${returnedBlog.title}`)
         setTimeout(() => {
           setErrorMessage('')
         },5000)
       })
       .catch(error => {
-        setErrorMessage(`New Blog ${newblog} cannot be added`)
+        setErrorMessage(`New Blog ${newtitle} cannot be added`)
         setTimeout(() => {
           setErrorMessage('')
         },5000)
