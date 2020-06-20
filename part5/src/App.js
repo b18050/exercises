@@ -12,6 +12,9 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [newblog , setNewblog] = useState('')
+  const [newauthor , setNewauthor] = useState('')
+  const [newtitle, setNewtitle] = useState('')
+  const [newurl, setNewurl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -61,7 +64,11 @@ const App = () => {
     event.preventDefault()
     console.log('adding new blog ', newblog)
 
-    const blogObject = newblog
+    const blogObject = {
+      title: newtitle,
+      author: newauthor,
+      url: newurl
+    }
     blogService
       .create(blogObject)
       .then(returnedBlog => {
@@ -96,10 +103,17 @@ const App = () => {
   const blogForm = () => (
     
     <form onSubmit={addBlog}>
-      <input
-        value={newblog}
-        onChange={({target}) => setNewblog(target.value)}
-      />
+      <div>
+        title <input value={newtitle} onChange={({target}) => setNewtitle(target.value)}/>
+      </div>
+      <div>
+        author <input value={newauthor} onChange={({target}) => setNewauthor(target.value)}/>
+      </div>
+      <div>
+        url <input value={newurl} onChange={({target}) => setNewurl(target.value)}/>
+      </div>
+
+      
       <button type="submit">save</button>
       
     </form>  
