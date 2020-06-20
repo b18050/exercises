@@ -24,6 +24,7 @@ const App = () => {
     console.log('event logging',username, password)
     try{
       const user = await loginService.login( { username, password } )
+      // console.log(user)
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -39,7 +40,25 @@ const App = () => {
   const addBlog = (event) => {
     event.preventDefault()
     console.log('adding new blog ', newblog)
-    
+
+    const blogObject = newblog
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        setNewblog('')
+        setErrorMessage(`Added ${returnedBlog.title}`)
+        setTimeout(() => {
+          setErrorMessage('')
+        },5000)
+      })
+      .catch(error => {
+        setErrorMessage(`New Blog ${newblog} cannot be added`)
+        setTimeout(() => {
+          setErrorMessage('')
+        },5000)
+      })
+      
   } 
 
   const loginForm = () => (
@@ -55,6 +74,7 @@ const App = () => {
   )
 
   const blogForm = () => (
+    
     <form onSubmit={addBlog}>
       <input
         value={newblog}
@@ -62,25 +82,38 @@ const App = () => {
       />
       <button type="submit">save</button>
     </form>  
+    
+    
+    
   )
 
+  
   return (
     <div> 
       
       <Notification message={errorMessage} />
 
 
-      {user === null ? loginForm() :
-      <div>
-        <p>{user.name} logged in</p>
-        {blogForm()}
-      </div>
-    }
+      {
+        user === null ? loginForm() :
+        <div>
+          <p>{user.name} logged in</p>
+        
+          {blogForm()}
+          </div>
+      }
+      
+      {
+        user === null ? '' :
+        <div> 
+          <h2>Blogs</h2>
+          { blogs.map (blog =>  <Blog key={blog.id} blog={blog} /> ) }
+        </div>
+      }
+          
+      
     
-      <h2>blogs</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      
     </div>
   )
 }
