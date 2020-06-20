@@ -24,6 +24,7 @@ const App = () => {
     console.log('event logging',username, password)
     try{
       const user = await loginService.login( { username, password } )
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
