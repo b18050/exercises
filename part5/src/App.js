@@ -54,6 +54,7 @@ const App = () => {
     console.log('logging out')
     console.log(window.localStorage.loggedBlogappUser)
     window.localStorage.removeItem('loggedBlogappUser')
+    setUser(null)
   }
 
   const addBlog = (event) => {
