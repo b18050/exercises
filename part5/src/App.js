@@ -4,10 +4,11 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
+import Togglable from './components/Togglable'
 
 
 const App = () => {
-  const [loginVisible, setloginVisible] = useState(false)
+  const [loginVisible, setLoginVisible] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const [blogs, setBlogs] = useState([])
   const [username,setUsername] = useState('')
@@ -91,20 +92,17 @@ const App = () => {
   } 
 
   const loginForm = () => (
-    
-      return (
-        <div>
-          <LoginForm 
-            username = {username}
-            password = {password}
-            handleUsernameChange = {({target}) => setUsername(target.value)}
-            handlePasswordChange = {({target}) => setPassword(target.value)}
-            handleSubmit = {handleLogin}
-          />
-        </div>
-        
-      )
-    
+
+      <Togglable buttonLabel='login'>
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={handleLogin}
+        />
+      </Togglable>
+  
   )
 
   const blogForm = () => (

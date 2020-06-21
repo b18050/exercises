@@ -4,12 +4,12 @@ const LoginForm = (props) => {
     return(
         <div>
             <h2>Login</h2>
-            <form onSubmit = {props.handleLogin} >
+            <form onSubmit = {props.handleSubmit} >
                 <div>
-                    Username <input type='text' value = {props.username} name="Username" onChange={props.handleChange} />
+                    Username <input type='text' value = {props.username} name="Username" onChange={props.handleUsernameChange} />
                 </div>
                 <div>
-                    Password <input type='password' value = {props.password} name="Password" onChange={props.handleChange} />
+                    Password <input type='password' value = {props.password} name="Password" onChange={props.handlePasswordChange} />
                 </div>
                 <button type="submit">login</button>
             </form>
