@@ -121,6 +121,7 @@ const App = () => {
   )
 
   
+  
   return (
     <div> 
       
@@ -140,7 +141,8 @@ const App = () => {
         user === null ? '' :
         <div> 
           <h2>Blogs</h2>
-          { blogs.map (blog =>  <Blog key={blog.id} blog={blog} handleLikes={() => handleLikes(blog.id)}/> ) }
+         
+          { blogs.sort((b1,b2) => b2.likes - b1.likes).map (blog =>  <Blog key={blog.id} blog={blog} handleLikes={() => handleLikes(blog.id)}/> ) }
           <button onClick={handleLogout}> Logout</button>
         </div>
       }
