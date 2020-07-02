@@ -1,6 +1,6 @@
 import React ,{ useState }from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog , handleLikes}) => {
   
   const [isVisible, setIsVisible] = useState(false)
 
@@ -18,11 +18,7 @@ const Blog = ({ blog }) => {
     marginBottom: 2
   }
 
-  const handleLikes = () => {
-    console.log("log is clicked")
-  }
-
-  const ShowBlogDetails = ({blog}) => (
+  const ShowBlogDetails = ({blog, handleLikes}) => (
     <div style={blogStyle}>
       {blog.title}
       <button onClick={handleIsVisible}> hide </button>
@@ -42,7 +38,7 @@ const Blog = ({ blog }) => {
   return (
     <div style={blogStyle}>
       {!isVisible && <ShowBlog blog={blog} />}
-      {isVisible && <ShowBlogDetails blog={blog} />}
+      {isVisible && <ShowBlogDetails blog={blog} handleLikes={handleLikes} />}
     </div>
    
   )
