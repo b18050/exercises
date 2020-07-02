@@ -99,6 +99,21 @@ const App = () => {
       })
   }
 
+  const handleRemove = (id) => {
+    const blog = blogs.find(b => b.id === id)
+    blogService.remove(id)
+      .then(returnedBlog => {
+        setBlogs(blogs.filter(blog => blog.id !== returnedBlog.id))
+      }) 
+      .catch(error => {
+        setErrorMessage(
+          `Note '${blog.title}' was already removed from server`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000) 
+      })
+  } 
 
   const loginForm = () => (
 
@@ -142,7 +157,19 @@ const App = () => {
         <div> 
           <h2>Blogs</h2>
          
-          { blogs.sort((b1,b2) => b2.likes - b1.likes).map (blog =>  <Blog key={blog.id} blog={blog} handleLikes={() => handleLikes(blog.id)}/> ) }
+          { blogs
+          .sort((b1,b2) => b2.likes - b1.likes)
+          .map (
+            blog =>  
+              <Blog 
+                key={blog.id} 
+                blog={blog} 
+                handleLikes={() => handleLikes(blog.id)}
+                handleRemove= {() => handleRemove(blog.id)}
+                user = {user}
+              /> 
+            )
+         }
           <button onClick={handleLogout}> Logout</button>
         </div>
       }
