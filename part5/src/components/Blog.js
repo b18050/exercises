@@ -1,7 +1,7 @@
 import React ,{ useState }from 'react'
 
-const Blog = ({ blog , handleLikes, handleRemove, user}) => {
-  
+const Blog = ({ blog , handleLikes, handleRemove, user }) => {
+
   const [isVisible, setIsVisible] = useState(false)
 
   const handleIsVisible = () => {
@@ -18,7 +18,7 @@ const Blog = ({ blog , handleLikes, handleRemove, user}) => {
     marginBottom: 2
   }
 
-  const ShowBlogDetails = ({blog, handleLikeClicks, handleRemoveClick}) => (
+  const ShowBlogDetails = ({ blog, handleLikeClicks, handleRemoveClick }) => (
     <div style={blogStyle}>
       {blog.title}
       <button onClick={handleIsVisible}> hide </button>
@@ -29,7 +29,7 @@ const Blog = ({ blog , handleLikes, handleRemove, user}) => {
     </div>
   )
 
-  const ShowBlog = ({blog}) => (
+  const ShowBlog = ({ blog }) => (
     <div style = {blogStyle}>
       {blog.title} {blog.author}
       <button onClick={handleIsVisible}> view </button>
@@ -38,12 +38,12 @@ const Blog = ({ blog , handleLikes, handleRemove, user}) => {
 
   const handleLikeClicks = e => {
     e.stopPropagation()
-    handleLikes(blog.id);
+    handleLikes(blog.id)
   }
 
   const handleRemoveClick = e => {
     e.stopPropagation()
-    const remove = window.confirm(`remove blog ${blog.title}?`);
+    const remove = window.confirm(`remove blog ${blog.title}?`)
     if (remove) {
       handleRemove(blog.id)
     }
@@ -54,9 +54,9 @@ const Blog = ({ blog , handleLikes, handleRemove, user}) => {
       {!isVisible && <ShowBlog blog={blog} />}
       {isVisible && <ShowBlogDetails blog={blog} handleLikeClicks={handleLikeClicks} handleRemoveClick={handleRemoveClick } />}
     </div>
-   
+
   )
-  
+
 }
 
 

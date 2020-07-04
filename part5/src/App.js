@@ -18,12 +18,12 @@ const App = () => {
   const [username,setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -40,10 +40,10 @@ const App = () => {
     console.log('event logging',username, password)
     try{
       const user = await loginService.login( { username, password } )
-      
+
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
       console.log(window.localStorage.loggedBlogappUser)
       blogService.setToken(user.token)
       setUser(user)
@@ -70,13 +70,13 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-      }) 
-  } 
+      })
+  }
 
   const handleLikes = (id) => {
     const blog = blogs.find(b => b.id === id)
-    const changedBlog = { 
-      title: blog.title, 
+    const changedBlog = {
+      title: blog.title,
       author: blog.title,
       url: blog.url,
       likes: blog.likes + 1,
@@ -95,7 +95,7 @@ const App = () => {
         )
         setTimeout(() => {
           setErrorMessage(null)
-        }, 5000)   
+        }, 5000)
       })
   }
 
@@ -104,79 +104,79 @@ const App = () => {
     blogService.remove(id)
       .then(returnedBlog => {
         setBlogs(blogs.filter(blog => blog.id !== returnedBlog.id))
-      }) 
+      })
       .catch(error => {
         setErrorMessage(
           `Note '${blog.title}' was already removed from server`
         )
         setTimeout(() => {
           setErrorMessage(null)
-        }, 5000) 
+        }, 5000)
       })
-  } 
+  }
 
   const loginForm = () => (
 
-      <Togglable buttonLabel='login'>
-        <LoginForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleSubmit={handleLogin}
-        />
-      </Togglable>
-  
+    <Togglable buttonLabel='login'>
+      <LoginForm
+        username={username}
+        password={password}
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
+        handleSubmit={handleLogin}
+      />
+    </Togglable>
+
   )
 
   const blogForm = () => (
-      <Togglable buttonLabel="new blog" ref={blogFormRef}>
-        <BlogForm createBlog = {addBlog} /> 
-      </Togglable>   
+    <Togglable buttonLabel="new blog" ref={blogFormRef}>
+      <BlogForm createBlog = {addBlog} />
+    </Togglable>
   )
 
-  
-  
+
+
   return (
-    <div> 
-      
+    <div>
+
       <Notification message={errorMessage} />
 
 
       {
         user === null ? loginForm() :
-        <div>
-          <p>{user.name} logged in</p>
-        
-          {blogForm()}
+          <div>
+            <p>{user.name} logged in</p>
+
+            {blogForm()}
           </div>
       }
-      
+
       {
         user === null ? '' :
-        <div> 
-          <h2>Blogs</h2>
-         
-          { blogs
-          .sort((b1,b2) => b2.likes - b1.likes)
-          .map (
-            blog =>  
-              <Blog 
-                key={blog.id} 
-                blog={blog} 
-                handleLikes={() => handleLikes(blog.id)}
-                handleRemove= {() => handleRemove(blog.id)}
-                user = {user}
-              /> 
-            )
-         }
-          <button onClick={handleLogout}> Logout</button>
-        </div>
+          <div>
+            <h2>Blogs</h2>
+
+            { blogs
+              .sort((b1,b2) => b2.likes - b1.likes)
+              .map (
+                blog =>
+                  <Blog
+                    key={blog.id}
+                    blog={blog}
+                    handleLikes={() => handleLikes(blog.id)}
+                    handleRemove= {() => handleRemove(blog.id)}
+                    user = {user}
+                  />
+              )
+            }
+            <button onClick={handleLogout}> Logout</button>
+          </div>
       }
-          
-      
-    
-      
+
+
+
+
     </div>
   )
 }
