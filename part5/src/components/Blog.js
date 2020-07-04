@@ -50,7 +50,7 @@ const Blog = ({ blog , handleLikes, handleRemove, user }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className = 'blog'>
       {!isVisible && <ShowBlog blog={blog} />}
       {isVisible && <ShowBlogDetails blog={blog} handleLikeClicks={handleLikeClicks} handleRemoveClick={handleRemoveClick } />}
     </div>
