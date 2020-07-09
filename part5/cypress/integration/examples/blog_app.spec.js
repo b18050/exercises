@@ -57,6 +57,23 @@ describe('Blog app', function() {
           .get('#like-button').click()
     })
 
+    it('User can delete a blog', function () {
+        cy.contains('I am a testing blog CarryMinati')
+          .contains('view').click()
+          .get('#remove-button').click()
+    } )
+
+    it('All users cannot delete a blog', function () {
+        cy.contains('Logout').click()
+        cy.contains('login').click()
+        cy.get('#username').type('CarryMinati')
+        cy.get('#password').type('tiktok')
+        cy.get('#login-button').click()
+        cy.contains('CarryisLove logged in')
+        cy.contains('Beauties and Beast JImmu seddril')
+          .contains('view').click()
+    })
+
   })
 
 })
