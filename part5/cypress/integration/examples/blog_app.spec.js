@@ -74,6 +74,34 @@ describe('Blog app', function() {
           .contains('view').click()
     })
 
+    it('Blogs with most likes are shown up', function () {
+        cy.contains('new blog').click()
+        cy.contains('Create a new blog')
+        cy.get('#newtitle').type('I am a testing blog')
+        cy.get('#newauthor').type('CarryMinati')
+        cy.get('#newurl').type('WWW.carryislive.com')
+        cy.contains('save').click()
+        cy.contains('I am a testing blog CarryMinati')
+          .contains('view').click()
+          .get('#like-button').click()
+
+        cy.visit('http://localhost:3000')
+
+        cy.contains('new blog').click()
+        cy.contains('Create a new blog')
+        cy.get('#newtitle').type('I am a testing blog2')
+        cy.get('#newauthor').type('CarryMinati')
+        cy.get('#newurl').type('WWW.carryislive1.com')
+        cy.contains('save').click()
+        cy.contains('I am a testing blog2 CarryMinati')
+
+        cy.visit('http://localhost:3000')
+
+        cy.contains('I am a testing blog2 CarryMinati')    
+    })
+
+
   })
+
 
 })
