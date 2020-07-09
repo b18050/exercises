@@ -14,14 +14,6 @@ describe('Blog app', function() {
     cy.contains('login').click()
   })
 
-  it('user can login', function () {
-    cy.contains('login').click()
-    cy.get('#username').type('CarryMinati')
-    cy.get('#password').type('tiktok')
-    cy.get('#login-button').click()
-    cy.contains('CarryisLove logged in')
-  })  
-
   describe('Login',function() {
     it('succeeds with correct credentials', function() {
         cy.contains('login').click()
@@ -57,6 +49,12 @@ describe('Blog app', function() {
         cy.contains('save').click()
         cy.contains('I am a testing blog')
         cy.contains('I am a testing blog CarryMinati')
+    })
+
+    it('User can like a blog', function () {
+        cy.contains('I am a testing blog CarryMinati')
+          .contains('view').click()
+          .get('#like-button').click()
     })
 
   })
