@@ -56,6 +56,7 @@ describe('Blog app', function() {
         cy.get('#newurl').type('WWW.carryislive.com')
         cy.contains('save').click()
         cy.contains('I am a testing blog')
+        cy.contains('I am a testing blog CarryMinati')
     })
 
   })
