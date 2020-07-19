@@ -1,5 +1,5 @@
-import { createStore } from 'redux'
-import { composeWithDevTools, combineReducers } from 'redux-devtools-extension'
+import { createStore,combineReducers } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 import anecdoteReducer from './reducers/anecdoteReducer'
 import notificationReducer from './reducers/notificationReducer'

@@ -1,17 +1,16 @@
-const notification = 'So, You have  chosen death, Those bastards lied to me .'
+const initialnotification = 'So, You have  chosen death, Those bastards lied to me .'
 
-const notificationReducer  = (state = notification , action ) => {
-    switch (action.type) {
-        case 'NOTIFICATION':
-            return state
+const notificationReducer  = (state = initialnotification , action) => {
+    switch(action.type) {
         default:
             return state
     }
 }
 
-export const notify = () => {
+export const notify = message => {
     return {
-      type: 'NOTIFICATION'
+      type: 'NOTIFICATION',
+      data: { message }
     }
   }
 
