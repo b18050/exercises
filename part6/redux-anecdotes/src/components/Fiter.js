@@ -1,17 +1,23 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { show_filter } from '../reducers/filterReducer'
 
 const Filter = () => {
-    const anecdotes = useSelector(state => state.filter)
+
+    const dispatch = useDispatch()
+
+    // const anecdotes = useSelector(state => state.filter)
+
     const handleFilterAnecdoteChange = (event) => {
+        event.preventDefault()
         const filter = event.target.value
         console.log(filter)
-        return {}
-
+        dispatch(show_filter(filter))
     }
-  const style = {
-    marginBottom: 10
-  }
+
+    const style = {
+        marginBottom: 10
+    }
 
   return (
     <div style={style}>
