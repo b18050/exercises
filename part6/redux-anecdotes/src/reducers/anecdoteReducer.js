@@ -1,3 +1,4 @@
+import anecdoteService from './../services/anecdotes'
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -17,45 +18,66 @@ const asObject = (anecdote) => {
   }
 }
 
+export const createAnecdote = (content) => {
+  return async dispatch => {
+    const newAnecdote = await anecdoteService.createNew(content)
+    dispatch({
+      type: 'CREATE',
+      data: newAnecdote, 
+    })
+    
+  }
+}
+
+export const giveVote = (id) => {
+  return async dispatch => {
+    const newAnecdote = await anecdoteService.giveVote(id)
+    dispatch({
+      type :'VOTE',
+      data : {id}
+    })
+  }
+}
+
+export const initializeAnecdotes = (anecdotes) => {
+  return async dispatch => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch({
+      type : 'INIT_ANECDOTES',
+      data : anecdotes
+    })
+    
+  }
+}
+
 const initialState = anecdotesAtStart.map(asObject)
 
-const anecdoteReducer = (state = initialState, action) => {
+const anecdoteReducer = (state = [], action) => {
   console.log('state now: ', state)
   console.log('action', action)
-  switch(action.type) {
-    case 'NEW_ANECDOTE':
-      const content = action.data.content
-      const newanecdote = {
-        content: content,
-        id: getId(),
-        votes: 0
-      }
-      return state.concat(newanecdote)
-    case 'VOTE':
+  switch (action.type) {
+
+    case 'VOTE':{
       const id = action.data.id
-      const anecdotetoVote = state.find(n => n.id === id)
-      const votedanecdote = {
-        ...anecdotetoVote,
-        votes: anecdotetoVote.votes + 1
+      const anecdote = state.find(a => a.id === id)
+      const newAnecdote = {
+        ...anecdote,
+        votes : anecdote.votes + 1
       }
-      return state.map(a => a.id !== id ? a : votedanecdote)
-  default:
-    return state
+      return state.map(anecdote => anecdote.id !== id ? anecdote : newAnecdote)
+    }
+
+    case 'CREATE': {
+      return state.concat(action.data)
+    }
+
+    case 'INIT_ANECDOTES': {
+      return action.data
+    }
+
+    default:
+      return state
   }
 }
 
-export const voteAnecdote = (id) => {
-  return {
-    type: 'VOTE',
-    data: { id }
-  }
-}
-
-export const createAnecdote = (content) => {
-  return {
-    type: 'NEW_ANECDOTE',
-    data: { content }
-  }
-}
-
-export default anecdoteReducer
+export default anecdoteReducer 

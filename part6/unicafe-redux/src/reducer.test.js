@@ -33,21 +33,6 @@ describe('unicafe reducer', () => {
     })
   })
 
-  test('bad is incremented', () => {
-    const action = {
-      type: 'BAD'
-    }
-    const state = initialState
-
-    deepFreeze(state)
-    const newState = counterReducer(state, action)
-    expect(newState).toEqual({
-      good: 0,
-      ok: 0,
-      bad: 1
-    })
-  })
-
   test('ok is incremented', () => {
     const action = {
       type: 'OK'
@@ -63,7 +48,22 @@ describe('unicafe reducer', () => {
     })
   })
 
-  test('restore stats is clicked', () => {
+  test('bad is incremented', () => {
+    const action = {
+      type: 'BAD'
+    }
+    const state = initialState
+
+    deepFreeze(state)
+    const newState = counterReducer(state, action)
+    expect(newState).toEqual({
+      good: 0,
+      ok: 0,
+      bad: 1
+    })
+  })
+
+  test('reverse back to initialState', () => {
     const action = {
       type: 'ZERO'
     }
@@ -77,4 +77,5 @@ describe('unicafe reducer', () => {
       bad: 0
     })
   })
+
 })

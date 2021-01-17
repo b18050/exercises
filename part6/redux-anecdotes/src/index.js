@@ -5,10 +5,7 @@ import App from './App'
 import store from './store'
 
 
-
-// import { createAnecdote } from './reducers/anecdoteReducer'
-// import { notify } from './reducers/notificationReducer'
-
+console.log(store.getState())
 
 ReactDOM.render(
   <Provider store={store}>
@@ -16,7 +13,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 )
-
-// store.subscribe(() => console.log(store.getState()))
-// store.dispatch(notify())
-// store.dispatch(createAnecdote('combineReducers forms one reducer from many simple reducers'))
