@@ -20,8 +20,6 @@ const useField = (type) => {
 const useResource = (baseUrl) => {
   const [resources, setResources] = useState([])
 
-  
-
   useEffect(() => {
 
     const getAll = async() => {
@@ -32,7 +30,6 @@ const useResource = (baseUrl) => {
     }
 
     getAll()
-
   },[baseUrl])
   
 
