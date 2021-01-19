@@ -3,6 +3,7 @@ const router = require('express').Router()
 const User = require('../models/user')
 
 router.get('/', async (request, response) => {
+  console.log(request.body)
   const users = await User
     .find({})
     .populate('blogs', { title: 1, url: 1,  likes: 1, author: 1 })
@@ -12,6 +13,7 @@ router.get('/', async (request, response) => {
 
 router.post('/', async (request, response) => {
   const { password, name, username } = request.body
+
 
   if ( !password || password.length<3 ) {
     return response.status(400).send({

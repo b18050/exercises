@@ -7,18 +7,18 @@ import NewBlog from './components/NewBlog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import storage from './utils/storage'
-import notificationReducer from './reducers/notificationReducer'
+// import notificationReducer from './reducers/notificationReducer'
 import { hideNotification, setNotification} from './reducers/notificationReducer'
 
-import { createStore } from 'redux'
+// import { createStore } from 'redux'
 import {useSelector,useDispatch} from 'react-redux'
 
-const store = createStore(notificationReducer)
+// const store = createStore(notificationReducer)
 
 const App = () => {
 
   const dispatch = useDispatch()
-  const [blogs, setBlogs] = useState([])
+  // const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
