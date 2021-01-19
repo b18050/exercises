@@ -7,14 +7,23 @@ import NewBlog from './components/NewBlog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import storage from './utils/storage'
+import notificationReducer from './reducers/notificationReducer'
+import { hideNotification, setNotification} from './reducers/notificationReducer'
+
+import { createStore } from 'redux'
+import {useSelector,useDispatch} from 'react-redux'
+
+const store = createStore(notificationReducer)
 
 const App = () => {
+
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [notification, setNotification] = useState(null)
-
+  // const [notification, setNotification] = useState(null)
+  // const notification = useSelector (state => state)
   const blogFormRef = React.createRef()
 
   useEffect(() => {
@@ -28,17 +37,9 @@ const App = () => {
     setUser(user)
   }, [])
 
-  const notifyWith = (message, type='success') => {
-    setNotification({
-      message, type
-    })
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
-  }
-
   const handleLogin = async (event) => {
     event.preventDefault()
+    
     try {
       const user = await loginService.login({
         username, password
@@ -47,10 +48,23 @@ const App = () => {
       setUsername('')
       setPassword('')
       setUser(user)
-      notifyWith(`${user.name} welcome back!`)
+      
+      const message = `${user.name} welcome back!`
+      dispatch(setNotification(message,'success'))
+
+      setTimeout(() => {
+        dispatch(hideNotification())
+      },5000)
       storage.saveUser(user)
     } catch(exception) {
-      notifyWith('wrong username/password', 'error')
+      const message = `wrong username/password`
+
+      dispatch(setNotification(message,'failure'))
+
+      setTimeout(() => {
+        dispatch(hideNotification())
+      },5000)
+      
     }
   }
 
@@ -59,7 +73,13 @@ const App = () => {
       const newBlog = await blogService.create(blog)
       blogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(newBlog))
-      notifyWith(`a new blog '${newBlog.title}' by ${newBlog.author} added!`)
+      
+      const message = `a new blog '${newBlog.title}' by ${newBlog.author} added!`
+      dispatch(setNotification(message,'success'))
+
+      setTimeout(() => {
+        dispatch(hideNotification())
+      },5000)
     } catch(exception) {
       console.log(exception)
     }
@@ -91,8 +111,6 @@ const App = () => {
       <div>
         <h2>login to application</h2>
 
-        <Notification notification={notification} />
-
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -121,12 +139,12 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-
-      <Notification notification={notification} />
-
+      <Notification />
+      
       <p>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
+     
 
       <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
         <NewBlog createBlog={createBlog} />
