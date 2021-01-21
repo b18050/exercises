@@ -9,7 +9,8 @@ import loginService from './services/login'
 import storage from './utils/storage'
 // import notificationReducer from './reducers/notificationReducer'
 import { hideNotification, setNotification} from './reducers/notificationReducer'
-import {intializeBlogs, createBlog } from './reducers/blogReducer'
+import {intializeBlogs, createBlog, likeBlog,removeBlog } from './reducers/blogReducer'
+import {initializeUser , setUser} from './reducers/userReducer'
 // import { createStore } from 'redux'
 import {useSelector,useDispatch} from 'react-redux'
 
@@ -19,18 +20,13 @@ const App = () => {
 
   const dispatch = useDispatch()
   // const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(null)
+  // const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   // const [notification, setNotification] = useState(null)
   // const notification = useSelector (state => state)
   const blogFormRef = React.createRef()
 
-  // useEffect(() => {
-  //   blogService.getAll().then(blogs =>
-  //     setBlogs(blogs)
-  //   )
-  // }, [])
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -41,10 +37,12 @@ const App = () => {
 
   useEffect(() => {
     const user = storage.loadUser()
-    setUser(user)
+    // setUser(user)
+    dispatch(initializeUser(user))
   }, [])
 
   const blogs = useSelector(state => state.blogs)
+  const user = useSelector(state => state.user)
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -56,7 +54,8 @@ const App = () => {
 
       setUsername('')
       setPassword('')
-      setUser(user)
+      // setUser(user)
+      dispatch(setUser(user))
       
       const message = `${user.name} welcome back!`
       dispatch(setNotification(message,'success'))
@@ -99,6 +98,7 @@ const App = () => {
     const blogToLike = blogs.find(b => b.id === id)
     const likedBlog = { ...blogToLike, likes: blogToLike.likes + 1, user: blogToLike.user.id }
     await blogService.update(likedBlog)
+    dispatch(likeBlog(id))
     // setBlogs(blogs.map(b => b.id === id ?  { ...blogToLike, likes: blogToLike.likes + 1 } : b))
   }
 
@@ -108,11 +108,13 @@ const App = () => {
     if (ok) {
       await blogService.remove(id)
       // setBlogs(blogs.filter(b => b.id !== id))
+      dispatch(removeBlog(id))
     }
   }
 
   const handleLogout = () => {
-    setUser(null)
+    // setUser(null)
+    dispatch(setUser(null))
     storage.logoutUser()
   }
 
