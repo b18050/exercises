@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import {
+  BrowserRouter as Router,
+  Switch, Route, Link
+} from "react-router-dom"
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -7,24 +11,21 @@ import NewBlog from './components/NewBlog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import storage from './utils/storage'
-// import notificationReducer from './reducers/notificationReducer'
+
 import { hideNotification, setNotification} from './reducers/notificationReducer'
 import {intializeBlogs, createBlog, likeBlog,removeBlog } from './reducers/blogReducer'
 import {initializeUser , setUser} from './reducers/userReducer'
-// import { createStore } from 'redux'
+
 import {useSelector,useDispatch} from 'react-redux'
 
-// const store = createStore(notificationReducer)
 
 const App = () => {
 
   const dispatch = useDispatch()
-  // const [blogs, setBlogs] = useState([])
-  // const [user, setUser] = useState(null)
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  // const [notification, setNotification] = useState(null)
-  // const notification = useSelector (state => state)
+
   const blogFormRef = React.createRef()
 
 
@@ -37,7 +38,7 @@ const App = () => {
 
   useEffect(() => {
     const user = storage.loadUser()
-    // setUser(user)
+ 
     dispatch(initializeUser(user))
   }, [])
 
@@ -54,7 +55,7 @@ const App = () => {
 
       setUsername('')
       setPassword('')
-      // setUser(user)
+
       dispatch(setUser(user))
       
       const message = `${user.name} welcome back!`
@@ -80,7 +81,7 @@ const App = () => {
     try {
       const newBlog = await blogService.create(blog)
       blogFormRef.current.toggleVisibility()
-      // setBlogs(blogs.concat(newBlog))
+
       dispatch(createBlog(newBlog))
       
       const message = `a new blog '${newBlog.title}' by ${newBlog.author} added!`
@@ -99,21 +100,18 @@ const App = () => {
     const likedBlog = { ...blogToLike, likes: blogToLike.likes + 1, user: blogToLike.user.id }
     await blogService.update(likedBlog)
     dispatch(likeBlog(id))
-    // setBlogs(blogs.map(b => b.id === id ?  { ...blogToLike, likes: blogToLike.likes + 1 } : b))
-  }
+    }
 
   const handleRemove = async (id) => {
     const blogToRemove = blogs.find(b => b.id === id)
     const ok = window.confirm(`Remove blog ${blogToRemove.title} by ${blogToRemove.author}`)
     if (ok) {
       await blogService.remove(id)
-      // setBlogs(blogs.filter(b => b.id !== id))
       dispatch(removeBlog(id))
     }
   }
 
   const handleLogout = () => {
-    // setUser(null)
     dispatch(setUser(null))
     storage.logoutUser()
   }

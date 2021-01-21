@@ -1,0 +1,13 @@
+import React from 'react'
+const User = (blogs) => {
+    console.log(blogs)
+    return(
+        <div>
+        <h2>User </h2>
+
+        </div>
+    )
+}
+
+export default User
+

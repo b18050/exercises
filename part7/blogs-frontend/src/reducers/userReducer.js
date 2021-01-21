@@ -13,6 +13,8 @@ export const setUser = (data) => {
 }
 
 const userReducer = (state = null ,action) => {
+    // console.log('state now',state)
+    console.log(action)
     switch (action.type){
         case 'INIT_USER':
             return action.data
