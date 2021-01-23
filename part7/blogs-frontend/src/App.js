@@ -8,8 +8,6 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
 import Users from './components/Users'
-// import User from './components/User'
-
 import blogService from './services/blogs'
 import loginService from './services/login'
 import userService from './services/users'
@@ -164,23 +162,40 @@ const App = () => {
     padding: 5
   }
 
-  const Home = ({addBlog, handleLike, handleRemove, byLikes}) => {
+  const Home = () => {
     console.log('home')
+
+    const blogStyle = {
+      paddingTop: 10,
+      paddingLeft: 2,
+      border: 'solid',
+      borderWidth: 1,
+      marginBottom: 5
+    }
+
+    const BlogList = ({blog}) => {
+      return(
+        <div style={blogStyle} className='blog'>
+          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+        </div>
+      )
+    }
+
     return(
       <div>
         <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
           <NewBlog addBlog={addBlog} />
         </Togglable>
 
-        {blogs.sort(byLikes).map(blog =>
-          <Blog
-            key={blog.id}
-            blog={blog}
-            handleLike={handleLike}
-            handleRemove={handleRemove}
-            own={user.username===blog.user.username}
-          />
-        )}
+        <div >
+          {blogs.sort(byLikes).map(blog =>
+            <BlogList
+              key={blog.id}
+              blog={blog}
+            />
+            
+          )}
+        </div>
       </div>
 
     )
@@ -221,17 +236,21 @@ const App = () => {
       <div>
         <Link style={padding} to="/users">users</Link>
         <Link style={padding} to="/">home</Link>
+        
   
       </div>
          <Switch>
          <Route path="/users/:id">        
             <User users={users} />      
          </Route>
+         <Route path="/blogs/:id">        
+            <Blog blogs={blogs} handleLike={handleLike} handleRemove={handleRemove} />      
+         </Route>
        <Route path="/users">
          <Users users={users} />
        </Route>
        <Route path="/">
-         <Home addBlog={addBlog} handleLike={handleLike} handleRemove={handleRemove} byLikes={byLikes} Togglable={Togglable} NewBlog={NewBlog}/>
+         <Home />
        </Route>
        
        
