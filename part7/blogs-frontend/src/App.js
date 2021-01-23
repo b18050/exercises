@@ -7,9 +7,12 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
+import Users from './components/Users'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
+import userService from './services/users'
+
 import storage from './utils/storage'
 
 import { hideNotification, setNotification} from './reducers/notificationReducer'
@@ -42,6 +45,15 @@ const App = () => {
     dispatch(initializeUser(user))
   }, [])
 
+  const [users, setUsers] = useState([])
+  useEffect(() => {
+        userService.getAll()
+                      .then(users => setUsers(users))
+        
+        
+  }, [])
+
+  
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
 
@@ -120,6 +132,7 @@ const App = () => {
     return (
       <div>
         <h2>login to application</h2>
+        <Notification />
 
         <form onSubmit={handleLogin}>
           <div>
@@ -146,6 +159,10 @@ const App = () => {
 
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
+  const padding = {
+    padding: 5
+  }
+
   return (
     <div>
       <h2>blogs</h2>
@@ -154,21 +171,27 @@ const App = () => {
       <p>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
-     
+      <Link style={padding} to="/users">users</Link>
+     <Switch>
+       <Route to="/users">
+         <Users users={users} />
+       </Route>
+     </Switch>
 
-      <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
-        <NewBlog addBlog={addBlog} />
-      </Togglable>
+        <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
+          <NewBlog addBlog={addBlog} />
+        </Togglable>
 
-      {blogs.sort(byLikes).map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleLike={handleLike}
-          handleRemove={handleRemove}
-          own={user.username===blog.user.username}
-        />
-      )}
+        {blogs.sort(byLikes).map(blog =>
+          <Blog
+            key={blog.id}
+            blog={blog}
+            handleLike={handleLike}
+            handleRemove={handleRemove}
+            own={user.username===blog.user.username}
+          />
+        )}
+      
     </div>
   )
 }
