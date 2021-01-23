@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import {
   BrowserRouter as Router,
-  Switch, Route, Link
+  Switch, Route, Link, useParams
 } from "react-router-dom"
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
 import Users from './components/Users'
+// import User from './components/User'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -163,21 +164,10 @@ const App = () => {
     padding: 5
   }
 
-  return (
-    <div>
-      <h2>blogs</h2>
-      <Notification />
-      
-      <p>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
-      </p>
-      <Link style={padding} to="/users">users</Link>
-     <Switch>
-       <Route to="/users">
-         <Users users={users} />
-       </Route>
-     </Switch>
-
+  const Home = ({addBlog, handleLike, handleRemove, byLikes}) => {
+    console.log('home')
+    return(
+      <div>
         <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
           <NewBlog addBlog={addBlog} />
         </Togglable>
@@ -191,6 +181,63 @@ const App = () => {
             own={user.username===blog.user.username}
           />
         )}
+      </div>
+
+    )
+    
+  }
+
+  const User = ({users}) => {
+    // if(!users) return null
+    console.log(users)
+    const id = useParams().id  
+    const user = users.find(u => u.id === id) 
+    if(!user) return null
+    console.log(user)
+    const blogList = user.blogs
+    return(
+        <div>
+        <div>
+        <h3>{user.name} </h3>
+        <h3> added blogs </h3>
+        <ul>
+            {blogList.map(blog => <li>{blog.title}</li>)}
+        </ul>
+       
+      </div>
+
+        </div>
+    )
+}
+
+  return (
+    <div>
+      <h2>blogs</h2>
+      <Notification />
+      
+      <p>
+        {user.name} logged in <button onClick={handleLogout}>logout</button>
+      </p>
+      <div>
+        <Link style={padding} to="/users">users</Link>
+        <Link style={padding} to="/">home</Link>
+  
+      </div>
+         <Switch>
+         <Route path="/users/:id">        
+            <User users={users} />      
+         </Route>
+       <Route path="/users">
+         <Users users={users} />
+       </Route>
+       <Route path="/">
+         <Home addBlog={addBlog} handleLike={handleLike} handleRemove={handleRemove} byLikes={byLikes} Togglable={Togglable} NewBlog={NewBlog}/>
+       </Route>
+       
+       
+     </Switch>
+
+        
       
     </div>
   )
