@@ -47,7 +47,7 @@ const Comments = ({blog, handleComment}) => {
 
         </TextField>
       </div>
-      <Button variant="contained" color="primary"> Add Comment</Button>
+      <Button variant="contained" color="primary" onClick={handleSubmit}> Add Comment</Button>
       </form>
       <h3> Comments</h3>
       <div>
