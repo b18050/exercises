@@ -1,6 +1,20 @@
 import React from 'react'
 
 import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow,
+    Paper,
+    Button,
+    TextField,
+    AppBar,
+    Toolbar,
+    IconButton,
+  } from '@material-ui/core'
+
+import {
     BrowserRouter as Router,
     Switch, Route, Link
   } from "react-router-dom"
@@ -15,21 +29,30 @@ const Users = (users) => {
             <h2>Users </h2>
 
             <div>
-            <table>
-                <th></th>
-                <th>blogs created</th>
+            <TableContainer>
+                <Table>
+                <TableBody >
+                    
+                    <TableRow>
+                    <TableCell> blogs created</TableCell>
+                    </TableRow>
+                    <TableRow>
             {userList.map(user =>
                 <tr>
-                    <td> <Link to={`/users/${user.id}`}>
+                    <TableCell> <Link to={`/users/${user.id}`}>
                         {/* <User key={user.id} user={user} /> */}
                         {user.name}
-                        </Link></td>
-                    <td >{user.blogs.length}
+                        </Link>
+                    </TableCell>
+                    <TableCell>{user.blogs.length}</TableCell>
                     
-                    </td>
+                
                 </tr>
             )}
-            </table>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </TableContainer>
 
             </div>
             
