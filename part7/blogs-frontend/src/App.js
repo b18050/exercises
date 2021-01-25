@@ -42,7 +42,7 @@ const App = () => {
     const user = storage.loadUser()
  
     dispatch(initializeUser(user))
-  }, [])
+  }, [dispatch])
 
   const [users, setUsers] = useState([])
   useEffect(() => {
@@ -112,6 +112,13 @@ const App = () => {
     await blogService.update(likedBlog)
     dispatch(likeBlog(id))
     }
+
+  // const handleComment = async (comment) => {
+  //   const blogToLike = blogs.find(b => b.id === id)
+  //   const likedBlog = { ...blogToLike, likes: blogToLike.likes + 1, user: blogToLike.user.id }
+  //   await blogService.update(likedBlog)
+  //   dispatch(likeBlog(id))
+  // }
 
   const handleRemove = async (id) => {
     const blogToRemove = blogs.find(b => b.id === id)
@@ -230,13 +237,15 @@ const App = () => {
       <h2>blogs</h2>
       <Notification />
       
-      <p>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
-      </p>
+      
       <div>
+        <div>
+        <Link style={padding} to="/">blogs</Link>
         <Link style={padding} to="/users">users</Link>
-        <Link style={padding} to="/">home</Link>
         
+        
+        {user.name} logged in <button onClick={handleLogout}>logout</button>
+        </div>
   
       </div>
          <Switch>
@@ -244,7 +253,7 @@ const App = () => {
             <User users={users} />      
          </Route>
          <Route path="/blogs/:id">        
-            <Blog blogs={blogs} handleLike={handleLike} handleRemove={handleRemove} />      
+            <Blog blogs={blogs} handleLike={handleLike} handleRemove={handleRemove}/>      
          </Route>
        <Route path="/users">
          <Users users={users} />

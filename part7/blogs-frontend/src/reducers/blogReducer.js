@@ -1,3 +1,5 @@
+import blogService from '../services/blogs'
+
 export const intializeBlogs = (blogs) => {
     return {
         type: 'INIT_BLOGS',
@@ -26,6 +28,12 @@ export const removeBlog = (id) => {
     }
 }
 
+export const addComment = ({comment,id}) => {
+    return {
+        type: 'COMMENT_BLOG',
+        data: { comment,id }
+    }
+}
 
 const blogReducer = ( state = [], action ) => {
 
@@ -49,6 +57,15 @@ const blogReducer = ( state = [], action ) => {
             const blogid = action.data.id
             const newState = state.filter(b => b.id !== blogid) 
             return newState
+        case 'COMMENT_BLOG':
+            const comment = action.data.comment
+            const blogToComment = state.find(b => b.id = action.data.id)
+            const commentedBlog = {
+                ...blogToComment,
+                comments: [...blogToComment.comments,comment]
+            }
+            blogService.comment(commentedBlog)
+            return state.map(blog => blog.id !== action.data.id ? blog : commentedBlog)
         default :
             return state
     }
