@@ -51,6 +51,10 @@ router.post('/', async (request, response) => {
     return response.status(400).send({ error: 'title or url missing ' })
   }
 
+  if(!blog.comments){
+    blog.comments = ""
+  }
+
   if (!blog.likes) {
     blog.likes = 0
   }
@@ -62,6 +66,17 @@ router.post('/', async (request, response) => {
   await user.save()
 
   response.status(201).json(savedBlog)
+})
+
+router.post('/:id/comments', async (request, response) => {
+  console.log(request.body)
+  const comment = request.body.comments
+  const updatedBlog = await Blog.findByIdAndUpdate(
+      request.params.id,
+      {comments : comment},
+      {new : true }
+    )
+    response.json(updatedBlog.toJSON())
 })
 
 module.exports = router
