@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Switch, Route, Link, useParams
 } from "react-router-dom"
+import Container from '@material-ui/core/Container'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -19,7 +20,19 @@ import {intializeBlogs, createBlog, likeBlog,removeBlog } from './reducers/blogR
 import {initializeUser , setUser} from './reducers/userReducer'
 
 import {useSelector,useDispatch} from 'react-redux'
-
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+  Button,
+  TextField,
+  AppBar,
+  Toolbar,
+  IconButton,
+} from '@material-ui/core'
 
 const App = () => {
 
@@ -113,12 +126,6 @@ const App = () => {
     dispatch(likeBlog(id))
     }
 
-  // const handleComment = async (comment) => {
-  //   const blogToLike = blogs.find(b => b.id === id)
-  //   const likedBlog = { ...blogToLike, likes: blogToLike.likes + 1, user: blogToLike.user.id }
-  //   await blogService.update(likedBlog)
-  //   dispatch(likeBlog(id))
-  // }
 
   const handleRemove = async (id) => {
     const blogToRemove = blogs.find(b => b.id === id)
@@ -142,22 +149,26 @@ const App = () => {
 
         <form onSubmit={handleLogin}>
           <div>
-            username
-            <input
+            {/* username */}
+            <TextField label="username"  onChange={({ target }) => setUsername(target.value)}/>
+            {/* <input
               id='username'
               value={username}
               onChange={({ target }) => setUsername(target.value)}
-            />
+            /> */}
           </div>
           <div>
-            password
-            <input
+            {/* password */}
+            {/* <input
               id='password'
               value={password}
               onChange={({ target }) => setPassword(target.value)}
-            />
+            /> */}
+            <TextField  label="password" type='password' onChange={({ target }) => setPassword(target.value)} />
           </div>
-          <button id='login'>login</button>
+          <Button variant="contained" color="primary" type="submit">
+            login
+          </Button>
         </form>
       </div>
     )
@@ -172,37 +183,36 @@ const App = () => {
   const Home = () => {
     console.log('home')
 
-    const blogStyle = {
-      paddingTop: 10,
-      paddingLeft: 2,
-      border: 'solid',
-      borderWidth: 1,
-      marginBottom: 5
-    }
+    
 
     const BlogList = ({blog}) => {
       return(
-        <div style={blogStyle} className='blog'>
-          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+        <div>
+          <TableCell><Link to={`/blogs/${blog.id}`}>{blog.title}</Link> </TableCell>
+          <TableCell>{blog.author}</TableCell>
         </div>
       )
     }
 
     return(
       <div>
-        <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
+        <Togglable variant="contained" buttonLabel='create new blog'  ref={blogFormRef}>
           <NewBlog addBlog={addBlog} />
         </Togglable>
-
-        <div >
-          {blogs.sort(byLikes).map(blog =>
-            <BlogList
-              key={blog.id}
-              blog={blog}
-            />
-            
-          )}
-        </div>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableBody >
+              {blogs.sort(byLikes).map(blog =>
+                <TableRow><BlogList
+                  key={blog.id}
+                  blog={blog}
+                />
+                </TableRow>
+                
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
 
     )
@@ -233,41 +243,55 @@ const App = () => {
 }
 
   return (
-    <div>
-      <h2>blogs</h2>
-      <Notification />
-      
-      
+    <Container>
       <div>
+        <h2>blogs</h2>
+        <Notification />
+        
+        
         <div>
-        <Link style={padding} to="/">blogs</Link>
-        <Link style={padding} to="/users">users</Link>
-        
-        
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
+          <div>
+            <AppBar position="static">
+              <Toolbar>
+                <IconButton edge="start" color="inherit" aria-label="menu">
+                </IconButton>
+                <Button color="inherit" component={Link} to="/">
+                  blogs
+                </Button>
+                
+                <Button color="inherit" component={Link} to="/users">
+                  users
+                </Button>
+                
+                <Button color="inherit">
+                {user.name} logged in <Button variant="contained" color="default" onClick={handleLogout}>logout</Button>
+                </Button>
+                </Toolbar>
+            </AppBar>
+          </div>
+    
         </div>
-  
-      </div>
-         <Switch>
-         <Route path="/users/:id">        
-            <User users={users} />      
-         </Route>
-         <Route path="/blogs/:id">        
-            <Blog blogs={blogs} handleLike={handleLike} handleRemove={handleRemove}/>      
-         </Route>
-       <Route path="/users">
-         <Users users={users} />
-       </Route>
-       <Route path="/">
-         <Home />
-       </Route>
+          <Switch>
+          <Route path="/users/:id">        
+              <User users={users} />      
+          </Route>
+          <Route path="/blogs/:id">        
+              <Blog blogs={blogs} handleLike={handleLike} handleRemove={handleRemove}/>      
+          </Route>
+        <Route path="/users">
+          <Users users={users} />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
        
        
-     </Switch>
+      </Switch>
 
+          
         
-      
-    </div>
+      </div>
+    </Container>
   )
 }
 

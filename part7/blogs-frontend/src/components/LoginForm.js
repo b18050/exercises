@@ -1,5 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Container from '@material-ui/core/Container'
+import {
+  Button,
+  TextField,
+} from '@material-ui/core'
 
 const LoginForm = (props) => {
   return(
@@ -7,12 +12,18 @@ const LoginForm = (props) => {
       <h2>Login</h2>
       <form onSubmit = {props.handleSubmit} >
         <div>
-                    Username <input id='username' type='text' value = {props.username} name="Username" onChange={props.handleUsernameChange} />
+                    {/* Username <input id='username' type='text' value = {props.username} name="Username" onChange={props.handleUsernameChange} /> */}
+                    <TextField label="username" />
         </div>
         <div>
-                    Password <input id='password' type='password' value = {props.password} name="Password" onChange={props.handlePasswordChange} />
+                    {/* Password <input id='password' type='password' value = {props.password} name="Password" onChange={props.handlePasswordChange} /> */}
+                    <TextField  label="password" type='password' />
         </div>
-        <button id='login-button' type="submit">login</button>
+        <div>
+          <Button variant="contained" color="primary" type="submit">
+            login
+          </Button>
+        </div>
       </form>
 
     </div>
