@@ -196,7 +196,7 @@ const App = () => {
 
     return(
       <div>
-        <Togglable variant="contained" buttonLabel='create new blog'  ref={blogFormRef}>
+        <Togglable  buttonLabel='create new blog'  ref={blogFormRef}>
           <NewBlog addBlog={addBlog} />
         </Togglable>
         <TableContainer component={Paper}>
