@@ -1,6 +1,6 @@
 const { ApolloServer, gql } = require('apollo-server')
 const { argsToArgsConfig } = require('graphql/type/definition')
-
+const { v1: uuid } = require('uuid')
 let authors = [
   {
     name: 'Robert Martin',
@@ -85,6 +85,7 @@ let books = [
 ]
 
 const typeDefs = gql`
+
   type Query {
       bookCount: Int!
       authorCount: Int!
@@ -105,6 +106,20 @@ const typeDefs = gql`
       id: ID!
       born: Int
       bookCount: Int
+  }
+
+  type Mutation {
+    addBook(
+      title: String!
+      author: String!
+      published: Int!
+      genres: [String!]
+    ): Book,
+
+    editAuthor(
+      name: String!
+      setBornTo: Int!
+    ): Author
   }
 `
 
@@ -130,6 +145,27 @@ const resolvers = {
             }
         ))
 
+    }
+  },
+  Mutation: {
+
+    addBook: (root, args) => {
+      const book = { ...args, id: uuid() }
+      books = books.concat(book)
+      return book
+    },
+
+    editAuthor: (root, args) => {
+      const author = authors.find(a => a.name == args.name)
+      if(!author) 
+        return null
+      const updatedAuthor = { 
+                              name: author.name,
+                              id: author.id,
+                              born: args.setBornTo
+                            }
+      authors = authors.map(a => a.name != args.name ? a : updatedAuthor )
+      return updatedAuthor
     }
   }
 }
