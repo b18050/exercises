@@ -14,6 +14,9 @@ const Authors = (props) => {
   
   const result = useQuery(ALL_AUTHORS)
 
+  if (!props.show) {
+    return null
+  }
   if(result.loading){
     return <div>loading...</div>
   }

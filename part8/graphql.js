@@ -136,6 +136,9 @@ const resolvers = {
       else if(args.genre) {
         return books.filter(b => b.genres.includes(args.genre))
       }
+      else {
+        return books
+      }
     },
     allAuthors: () => {
         return authors.map(a => (
