@@ -141,10 +141,10 @@ const resolvers = {
         return authors.map(a => (
             {
                 name: a.name,
-                bookCount: books.filter(b => b.author == a.name).length
+                bookCount: books.filter(b => b.author == a.name).length,
+                born: a.born
             }
         ))
-
     }
   },
   Mutation: {
