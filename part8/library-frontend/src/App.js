@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
+import LoginForm from './components/LoginForm'
 import NewBook from './components/NewBook'
 
 const App = () => {
+  const [token, setToken] = useState(null)
   const [page, setPage] = useState('authors')
   const [errorMessage, setErrorMessage] = useState(null)
 
@@ -12,6 +14,19 @@ const App = () => {
     setTimeout(() => {      
       setErrorMessage(null)    
     }, 10000)  
+  }
+
+  if (!token) {
+    return (
+      <div>
+        <Notify errorMessage={errorMessage} />
+        <h2>Login</h2>
+        <LoginForm
+          setToken={setToken}
+          setError={notify}
+        />
+      </div>
+    )
   }
 
   return (

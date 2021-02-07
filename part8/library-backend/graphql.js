@@ -4,24 +4,28 @@ const Book = require('./models/book')
 const Author = require('./models/author')
 const User = require('./models/user') 
 
-const { v1: uuid } = require('uuid')
 
 const mongoose = require('mongoose')
 const password = process.argv[2]
 
+const jwt = require('jsonwebtoken')
+const JWT_SECRET = 'NEED_HERE_A_SECRET_KEY'
+const { UserInputError } = require("apollo-server");
 const MONGODB_URI = `mongodb+srv://sekred:${password}@cluster0.gx21s.mongodb.net/<dbname>?retryWrites=true&w=majority`
 console.log('connecting to', MONGODB_URI)
 
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+mongoose.connect(MONGODB_URI, { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true, 
+    useFindAndModify: false, 
+    useCreateIndex: true 
+  })
   .then(() => {
     console.log('connected to MongoDB')
   })
   .catch((error) => {
     console.log('error connection to MongoDB:', error.message)
   })
-const jwt = require('jsonwebtoken')
-
-const JWT_SECRET = 'NEED_HERE_A_SECRET_KEY'
 
 const typeDefs = gql`
 
@@ -36,7 +40,7 @@ const typeDefs = gql`
   type Book {
     title: String!
     published: Int!
-    author: Author
+    author: Author!
     id: ID!
     genres: [String!]
   }
@@ -45,7 +49,7 @@ const typeDefs = gql`
       name: String!
       id: ID!
       born: Int
-      bookCount: Int
+      bookCount: Int!
   } 
 
   type User {
@@ -61,7 +65,7 @@ const typeDefs = gql`
   type Mutation {
     addBook(
       title: String!
-      author: String
+      author: String!
       published: Int!
       genres: [String!]
     ): Book,
@@ -96,18 +100,17 @@ const resolvers = {
 
     authorCount: () => Author.collection.countDocuments(),
 
-    allBooks: (root, args) =>  {
+    allBooks: async (root, args) =>  {
       // if(args.author && args.genre)
       //   return books.filter(b => b.genres.includes(args.genre) && b.author == args.author)
       // else if(args.author){
       //   return books.filter(b => b.author == args.author)
       // }
       if(args.genre) {
-        return Book.find( { genres: { $in: [args.genre]}})
+        return await Book.find( { genres: { $in: [args.genre]}}).populate("author")
       }
-      else {
-        return Book.find({})
-      }
+     
+      return await Book.find({}).populate("author")
     },
     allAuthors: () => {
         // return Author.map(a => (
@@ -117,18 +120,40 @@ const resolvers = {
         //         born: a.born
         //     }
         // ))
-        return Author.find({})
+        return Author.find({}).populate("books")
     },
     me: (root, args, context) => {
       return context.currentUser
     }
   },
+  
+  Author:{
+    bookCount: (root) => root.books.length,
+  },
+
   Mutation: {
 
-    addBook: async (root, args) => {
-      const book = new Book({ ...args})
+    addBook: async (root, args, {currentUser}) => {
+
+      // Log in user
+      if(!currentUser){
+        throw new UserInputError("You must be logged in to add a new book!")
+      }
+      let author;
       try {
-        await book.save()
+        // Find if author already exists
+        author = await Author.findOne({ name: args.author})
+        // if author is not present
+        if(!author) {
+          author = new Author({ name: args.author })
+        }
+        
+        book = new Book({ ...args,author})
+        const savedBook = await book.save()
+        console.log(savedBook)
+
+        author.books = author.books.concat(savedBook._id)
+        await author.save()
       } catch(error){
         throw new UserInputError(error.message, {
           invalidArgs: args,
@@ -149,11 +174,22 @@ const resolvers = {
       return author
     },
 
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, {currentUser}) => {
+      
+      if(!currentUser) {
+        throw new UserInputError("You must be logged in to edit an author")
+      }
+
       const author = await Author.findOne( {name: args.name})
+      
+      if(!author) {
+        throw new UserInputError("No author found")
+      }
+
       author.born = args.setBornTo
+
       try{
-        author.save()
+        await author.save()
       }catch(error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,
@@ -200,8 +236,10 @@ const server = new ApolloServer({
       const decodedToken = jwt.verify(        
         auth.substring(7), JWT_SECRET      
       )      
-      const currentUser = await User.findById(decodedToken.id).populate('favoriteGenre')      
-  return { currentUser }    }  }
+      const currentUser = await User.findById(decodedToken.id)    
+    return { currentUser }    
+    }  
+  }
 })
 
 server.listen().then(({ url }) => {
