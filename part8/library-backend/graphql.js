@@ -6,7 +6,9 @@ const Author = require('./models/author')
 const { v1: uuid } = require('uuid')
 
 const mongoose = require('mongoose')
-const MONGODB_URI = `mongodb+srv://sekred:sekred@cluster0.gx21s.mongodb.net/<dbname>?retryWrites=true&w=majority`
+const password = process.argv[2]
+
+const MONGODB_URI = `mongodb+srv://sekred:${password}@cluster0.gx21s.mongodb.net/<dbname>?retryWrites=true&w=majority`
 console.log('connecting to', MONGODB_URI)
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
@@ -92,17 +94,20 @@ const resolvers = {
       return book.save()
     },
 
-    editAuthor: (root, args) => {
-      const author = authors.find(a => a.name == args.name)
-      if(!author) 
-        return null
-      const updatedAuthor = { 
-                              name: author.name,
-                              id: author.id,
-                              born: args.setBornTo
-                            }
-      authors = authors.map(a => a.name != args.name ? a : updatedAuthor )
-      return updatedAuthor
+    editAuthor: async (root, args) => {
+      // const author = authors.find(a => a.name == args.name)
+      // if(!author) 
+      //   return null
+      // const updatedAuthor = { 
+      //                         name: author.name,
+      //                         id: author.id,
+      //                         born: args.setBornTo
+      //                       }
+      // authors = authors.map(a => a.name != args.name ? a : updatedAuthor )
+      // return updatedAuthor
+      const author = Author.findOne( {name: args.name})
+      author.born = args.setBornTo
+      return author.save()
     }
   }
 }
