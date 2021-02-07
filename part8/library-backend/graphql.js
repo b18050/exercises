@@ -52,6 +52,12 @@ const typeDefs = gql`
       genres: [String!]
     ): Book,
 
+    addAuthor(
+      name: String!,
+      born: Int!,
+      bookCount: Int
+    ): Author,
+
     editAuthor(
       name: String!
       setBornTo: Int!
@@ -61,19 +67,22 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
+
     bookCount: () => Book.collection.countDocuments(),
+
     authorCount: () => Author.collection.countDocuments(),
+
     allBooks: (root, args) =>  {
-      if(args.author && args.genre)
-        return books.filter(b => b.genres.includes(args.genre) && b.author == args.author)
-      else if(args.author){
-        return books.filter(b => b.author == args.author)
-      }
-      else if(args.genre) {
-        return books.filter(b => b.genres.includes(args.genre))
+      // if(args.author && args.genre)
+      //   return books.filter(b => b.genres.includes(args.genre) && b.author == args.author)
+      // else if(args.author){
+      //   return books.filter(b => b.author == args.author)
+      // }
+      if(args.genre) {
+        return Book.find( { genres: { $in: [args.genre]}})
       }
       else {
-        return books
+        return Book.find({})
       }
     },
     allAuthors: () => {
@@ -94,18 +103,13 @@ const resolvers = {
       return book.save()
     },
 
+    addAuthor: (root, args) => {
+      const author = new Author({ ...args })
+      return author.save()
+    },
+
     editAuthor: async (root, args) => {
-      // const author = authors.find(a => a.name == args.name)
-      // if(!author) 
-      //   return null
-      // const updatedAuthor = { 
-      //                         name: author.name,
-      //                         id: author.id,
-      //                         born: args.setBornTo
-      //                       }
-      // authors = authors.map(a => a.name != args.name ? a : updatedAuthor )
-      // return updatedAuthor
-      const author = Author.findOne( {name: args.name})
+      const author = await Author.findOne( {name: args.name})
       author.born = args.setBornTo
       return author.save()
     }
