@@ -2,6 +2,7 @@ const { ApolloServer, gql } = require('apollo-server')
 
 const Book = require('./models/book')
 const Author = require('./models/author')
+const User = require('./models/user') 
 
 const { v1: uuid } = require('uuid')
 
@@ -136,7 +137,7 @@ const resolvers = {
       return book
     },
 
-    addAuthor: (root, args) => {
+    addAuthor: async (root, args) => {
       const author = new Author({ ...args })
       try{
         await author.save()
@@ -161,15 +162,16 @@ const resolvers = {
       return author
     },
 
-    createUser: (root, args) => {
-      const user = new User({ username: args.username })
-  
-      return user.save()
-        .catch(error => {
+    createUser: async (root, args) => {
+      const user = new User({ ...args })
+      try{
+        await user.save()
+      }catch(error){
           throw new UserInputError(error.message, {
             invalidArgs: args,
           })
-        })
+      }
+      return user
     },
 
     login: async (root, args) => {
