@@ -9,7 +9,7 @@ mutation login($username: String!, $password: String!) {
 }
 `
 
-const LoginForm = ({ setError, setToken }) => {
+const LoginForm = ({ setToken,setError }) => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')

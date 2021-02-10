@@ -12,7 +12,7 @@ const jwt = require('jsonwebtoken')
 const JWT_SECRET = 'NEED_HERE_A_SECRET_KEY'
 const { UserInputError } = require("apollo-server");
 const MONGODB_URI = `mongodb+srv://sekred:${password}@cluster0.gx21s.mongodb.net/<dbname>?retryWrites=true&w=majority`
-console.log('connecting to', MONGODB_URI)
+// console.log('connecting to', MONGODB_URI)
 
 mongoose.connect(MONGODB_URI, { 
     useNewUrlParser: true, 
@@ -187,7 +187,6 @@ const resolvers = {
       }
 
       author.born = args.setBornTo
-
       try{
         await author.save()
       }catch(error) {
@@ -197,6 +196,7 @@ const resolvers = {
       }
       return author
     },
+
 
     createUser: async (root, args) => {
       const user = new User({ ...args })
@@ -211,7 +211,9 @@ const resolvers = {
     },
 
     login: async (root, args) => {
+      // console.log(args.username)
       const user = await User.findOne({ username: args.username })
+      // console.log(user)
   
       if ( !user || args.password !== 'sekred' ) {
         throw new UserInputError("wrong credentials")
