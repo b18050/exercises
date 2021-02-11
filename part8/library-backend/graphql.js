@@ -106,6 +106,7 @@ const resolvers = {
       // else if(args.author){
       //   return books.filter(b => b.author == args.author)
       // }
+      console.log(args)
       if(args.genre) {
         return await Book.find( { genres: { $in: [args.genre]}}).populate("author")
       }
