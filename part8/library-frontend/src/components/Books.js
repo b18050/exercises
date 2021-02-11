@@ -24,13 +24,14 @@ const Books = (props) => {
     return <div>loading...</div>
   }
 
-  console.log(genre)
+  // console.log(genre)
 
  const genreList = ["refactoring","patterns","design","agile","crime","classic","all_genres"]
  
  if (!props.show) {
    return null
   }
+  console.log(result.data)
   if(genre==null || genre=='all_genres'){
     return (
       <div>
