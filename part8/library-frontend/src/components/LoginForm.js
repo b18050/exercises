@@ -9,7 +9,7 @@ mutation login($username: String!, $password: String!) {
 }
 `
 
-const LoginForm = ({ setToken,setError }) => {
+const LoginForm = ({ show, setToken,setError }) => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -28,7 +28,9 @@ const LoginForm = ({ setToken,setError }) => {
         }  
     }, [result.data]) // eslint-disable-line
 
-
+    if (!show) {
+      return null
+    }
   const submit = async (event) => {
     event.preventDefault()
     login({ variables: { username, password } })

@@ -18,22 +18,10 @@ const App = () => {
   }
 
   const logout = () => {    
+    console.log(' logout')
     setToken(null)    
     localStorage.clear()    
     client.resetStore()  
-  }
-
-  if (!token) {
-    return (
-      <div>
-        <Notify errorMessage={errorMessage} />
-        <h2>Login</h2>
-        <LoginForm
-          setToken={setToken}
-          setError={notify}
-        />
-      </div>
-    )
   }
 
   return (
@@ -44,12 +32,14 @@ const App = () => {
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('add')}>add book</button>
-        <button onClick={() => setPage('login')}>login</button>
+        {token && <button onClick={() => setPage('add')}>add book</button>}
+        {!token && <button onClick={() => setPage('login')}>login</button> }
+        {token && <button onClick={logout}>logout</button> }
+
       </div>
 
       <Authors
-        show={page === 'authors'} setError={notify}
+        show={page === 'authors'} setError={notify} edit={ token != null }
       />
 
       <Books
@@ -60,7 +50,9 @@ const App = () => {
         show={page === 'add'} setError={notify}
       />
 
-      {!token && <LoginForm setToken={setToken}/>  }
+      <LoginForm show={page === 'login'} setToken={setToken} setError={notify}/>
+      {/* {!token && <LoginForm setToken={setToken}/>  }
+      {token && <Logout logout={logout}/>} */}
 
     </div>
   )

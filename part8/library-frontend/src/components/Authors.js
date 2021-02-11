@@ -85,7 +85,7 @@ const Authors = (props) => {
           </tbody>
         </table>
       </div>
-      <div>
+      { props.edit && <div>
         <h3>Set birth year</h3>
           <form onSubmit={submit}>
             <div>
@@ -110,7 +110,7 @@ const Authors = (props) => {
             <button type='submit'>update author</button>
         </form>
               
-      </div>
+      </div> }
     </div>
   )
 }
