@@ -27,7 +27,19 @@ const Recommend = (props) => {
    
     const [books, setBooks] = useState([])
     const [allBooks, result] = useLazyQuery(
-        FAVORITE_BOOKS
+        FAVORITE_BOOKS,
+        {
+            update: (store, response) => {      
+                const dataInStore = store.readQuery({ query: FAVORITE_BOOKS })      
+                store.writeQuery({        
+                    query: FAVORITE_BOOKS,        
+                    data: {          
+                        ...dataInStore,          
+                        allBooks: [ ...dataInStore.allBooks, response.data.allBooks ]        
+                    }      
+                })    
+            }
+        }
     )
     if(user.data)
         console.log(user.data.me)
