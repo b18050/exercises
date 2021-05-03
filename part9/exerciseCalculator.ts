@@ -11,7 +11,7 @@ interface Result {
 const parsedArguments = (args: Array<string>):number[] => {
     
     let hours: number[] = []
-    let i = 0;
+    
     if (!isNaN(Number(args[2]))){
         for(let i=2;i<args.length;i++){
             hours.push(Number(args[i]));
@@ -24,7 +24,7 @@ const parsedArguments = (args: Array<string>):number[] => {
 }
 
 
-const calculateExercises = (hours:number[]): Result => {
+export const calculateExercises = (hours:number[], target:number): Result => {
 
     let days = 0;
     let h = 0;
@@ -37,7 +37,7 @@ const calculateExercises = (hours:number[]): Result => {
         if(hours[i] != 0) days++; 
     }
 
-    let target = mx * hours.length;
+    // let target = mx * hours.length;
     let average = h / hours.length;
 
     let rating = 0;
@@ -60,12 +60,14 @@ const calculateExercises = (hours:number[]): Result => {
         desc = 'Nice performance';
     }
 
+    let success:boolean = average >= target; 
+
     return {
         periodLength: Number(hours.length),
         trainingDays: Number(days),
-        success: true,
+        success: success,
         rating: rating,
-        ratingDescription: 'I am good',
+        ratingDescription: desc,
         target: target,
         average: average
     }
@@ -75,7 +77,7 @@ const calculateExercises = (hours:number[]): Result => {
 
 try {
     const arr = parsedArguments(process.argv);
-    console.log(calculateExercises(arr));
+    console.log(calculateExercises(arr,2.4));
   } catch (e) {
     console.log('Error, something bad happened, message: ', e.message);
 }
