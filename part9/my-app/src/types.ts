@@ -3,11 +3,11 @@ export interface CoursePartBase {
     name: string;
     exerciseCount: number;
     type: string;
-  }
+}
   
-  interface CourseNormalSubmissionPart extends CoursePartBase {
+interface CourseNormalSubmissionPart extends CoursePartBase {
     description: string;
-  }
+}
   
   interface CourseNormalPart extends CourseNormalSubmissionPart {
     type: "normal";
